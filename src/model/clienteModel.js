@@ -1,6 +1,6 @@
 const pool = require('../config/db');
 
-const entregaModel = {
+const clienteModel = {
     selecionarTodos: async () => {
         const sql = 'SELECT * FROM clientes;';
         const [rows] = await pool.query(sql)
@@ -8,4 +8,4 @@ const entregaModel = {
     }
 }
 
-module.exports = { entregaModel }
+module.exports = { clienteModel }

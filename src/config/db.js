@@ -4,7 +4,7 @@ const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: '1234',
-    database: 'lojadb',
+    database: 'rsdb',
     port: 3308,
     waitForConnections: true, //Aguarda conexoes livres
     connectionLimit: 10, //Limita o numero de conexoes

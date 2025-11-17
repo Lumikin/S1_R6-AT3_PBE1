@@ -25,3 +25,5 @@ const pedidoModel = {
 };
 
 module.exports = { pedidoModel };
+
+

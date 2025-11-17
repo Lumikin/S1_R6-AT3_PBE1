@@ -1,5 +1,7 @@
 const { clienteModel } = require('../model/clienteModel');
 const clienteController = {
+
+    // SELECIONAR TODOS OS CLIENTES:
     selecionarTodosClientes: async (req, res) => {
         try {
             const resultado = clienteModel.selecionarTodos();
@@ -18,6 +20,7 @@ const clienteController = {
             })
         }
     },
+    // SELECIONAR CLIENTE POR ID:
     selecionarId: async (req, res) => {
         try {
             const id = Number(req.params.Id)
@@ -27,7 +30,7 @@ const clienteController = {
                 })
             }
             const resultado = clienteModel.selecionarUm(id)
-            if (!resultado || resultado.length === 0) {
+            if (!resultado || resultado.length === 0) { // VERIFICAR SE O RESULTADO É VALIDO
                 return res.status(400).json({
                     message: "Registro não encontrado!"
                 })
@@ -46,18 +49,21 @@ const clienteController = {
             })
         }
     },
+
+    // ADICIONAR UM CLIENTE:
     inserirCliente: async (req, res) => {
         try {
             const { nome, cpf, tel, email, endereco } = req.body;
             if (!nome || nome.length < 3 || !String(nome) || !Number(cpf) || cpf.length != 11 || !tel || tel.length > 13 || tel.length < 8 || !email || !endereco) {
-                return res.status(400).json({ message: 'Dados invalidos' })
+                return res.status(400).json({ message: 'Dados invalidos' }) //^== VERIFICAR SE TODAS AS VARIAVEIS SÃO VALIDAS EM SEUS ELEMENTOS 
 
             }
-
+            // CONSULTAR CPF:
             const consultarCPF = await clienteModel.verificarCPF(cpf)
             if (consultarCPF.length > 0) {
                 return res.status(409).json({ message: "Cpf já esta cadastrado!" })
             }
+            // CONSULTAR EMAIL
             const consultarEmail = await clienteModel.verificarEmail(email)
             if (consultarEmail.length > 0) {
                 return res.status(409).json({ message: "Email já esta cadastrado!" })

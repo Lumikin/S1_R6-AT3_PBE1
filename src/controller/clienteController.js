@@ -45,6 +45,32 @@ const clienteController = {
                 errorMessage: error.message
             })
         }
+    },
+    inserirCliente: async (req, res) => {
+        try {
+            const { nome, cpf, tel, email, endereco } = req.body;
+            if (!nome || nome.length < 3 || !String(nome) || !Number(cpf) || cpf.length != 11 || !tel || tel.length < 14 || !email || !endereco) {
+                return res.status(400).json({ message: 'Dados invalidos' })
+
+            }
+
+            const consultarCPF = await clienteModel.verificarCPF(cpf)
+            if (consultarCPF.length > 0) {
+                return res.status(409).json({ message: "Cpf já esta cadastrado!" })
+            }
+            const resultado = await clienteModel.inserirCliente(nome, cpf, tel, email, endereco)
+            if (resultado.affectedRows === 1 && resultado.insertId !== 0) {
+                res.status(201).json({ message: 'Registro incluido com sucesso', result: resultado })
+            } else {
+                throw new Error('ocorreu um erro ao incluir o registro')
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: 'Ocorreu um erro no servidor',
+                errorMessage: error.message
+            })
+        }
     }
 }
 module.exports = { clienteController }

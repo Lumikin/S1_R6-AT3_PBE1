@@ -11,6 +11,20 @@ const clienteModel = {
         const values = [pId]
         const [rows] = await pool.query(sql, values)
         return rows;
+    },
+    inserirCliente: async (pNome, pCpf, pTel, pEmail, pEndereco) => {
+        const sql = 'INSERT INTO clientes (nomeCliente, cpfCliente, telefoneCliente, emailCliente, enderecoCliente) VALUES (?,?,?,?,?);';
+        const values = [pNome, pCpf, pTel, pEmail, pEndereco];
+        const [rows] = await pool.query(sql, values);
+        console.log(rows);
+        return rows;
+    },
+     verificarCPF: async (consultarCPF) => {
+        const sql = 'SELECT * FROM clientes WHERE cpfCliente=?;';
+        const values = [consultarCPF];
+        const [rows] = await pool.query(sql, values);
+        console.log(rows);
+        return rows;
     }
 
 }

@@ -4,5 +4,6 @@ const { clienteController } = require('../controller/clienteController');
 
 clienteRoutes.get('/Clientes', clienteController.selecionarTodosClientes);
 clienteRoutes.get('/Clientes/:id', clienteController.selecionarId);
+clienteRoutes.post('/Clientes', clienteController.inserirCliente)
 
 module.exports = { clienteRoutes }

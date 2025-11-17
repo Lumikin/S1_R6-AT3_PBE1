@@ -19,10 +19,20 @@ const clienteModel = {
         console.log(rows);
         return rows;
     },
-     verificarCPF: async (consultarCPF) => {
+    // VERIFICADORES:
+    // CPF:
+    verificarCPF: async (consultarCPF) => {
         const sql = 'SELECT * FROM clientes WHERE cpfCliente=?;';
         const values = [consultarCPF];
         const [rows] = await pool.query(sql, values);
+        console.log(rows);
+        return rows;
+    },
+    // EMAIL:
+    verificarEmail: async (consultarEmail) => {
+        const sql = 'SELECT * FROM clientes WHERE emailCliente=?;';
+        const values = [consultarEmail];
+        const [rows] = await pool.query(sql, values)
         console.log(rows);
         return rows;
     }

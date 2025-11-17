@@ -49,7 +49,7 @@ const clienteController = {
     inserirCliente: async (req, res) => {
         try {
             const { nome, cpf, tel, email, endereco } = req.body;
-            if (!nome || nome.length < 3 || !String(nome) || !Number(cpf) || cpf.length != 11 || !tel || tel.length < 14 || !email || !endereco) {
+            if (!nome || nome.length < 3 || !String(nome) || !Number(cpf) || cpf.length != 11 || !tel || tel.length > 13 || tel.length < 8 || !email || !endereco) {
                 return res.status(400).json({ message: 'Dados invalidos' })
 
             }
@@ -57,6 +57,10 @@ const clienteController = {
             const consultarCPF = await clienteModel.verificarCPF(cpf)
             if (consultarCPF.length > 0) {
                 return res.status(409).json({ message: "Cpf já esta cadastrado!" })
+            }
+            const consultarEmail = await clienteModel.verificarEmail(email)
+            if (consultarEmail.length > 0) {
+                return res.status(409).json({ message: "Email já esta cadastrado!" })
             }
             const resultado = await clienteModel.inserirCliente(nome, cpf, tel, email, endereco)
             if (resultado.affectedRows === 1 && resultado.insertId !== 0) {

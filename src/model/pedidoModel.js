@@ -1,29 +1,22 @@
+// ...existing code...
 const pool = require('../config/db');
 
 const pedidoModel = {
-    insertPedido: async ( pIdEntregas, pIdClientes, pDataPedido, pDistanciaPedido, pPesoCarga, pValorKm, pValorKg ) => {
-        const connection = await pool.getConnection();
+    insertPedido: async (idEntregas, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg) => {
         try {
-        await connection.beginTransaction();
-        const valorFinal = calcularEntrega(distanciaPedido, valorKm, pesoCarga, valorKg);
+            let sql, params;
+            sql = ` INSERT INTO pedidos (idEntregas, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg) VALUES (?, ?, ?, ?, ?, ?, ?)
+                `;
+            params = [idEntregas, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg];
 
-        const sqlPedido = ` INSERT INTO pedidos (idEntregas, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-        const valuesPedido = [ pIdEntregas, pIdClientes, pDataPedido,pDistanciaPedido, pPesoCarga, pValorKm, pValorKg ];
-        const [rowsPedido] = await conn.query(sql, values);
 
-        await connection.commit();
-        connection.release();
-
-        return { rowsPedido };
-
-        } catch (error) {
-            await connection.rollback();
-            connection.release();
-            throw error;
+            const [result] = await pool.query(sql, params);
+            return { insertId: result.insertId, affectedRows: result.affectedRows };
+        } catch (err) {
+            console.error('Erro ao inserir pedido:', err);
+            throw new Error('Erro ao inserir pedido: ' + (err.message || err));
         }
     }
 };
 
 module.exports = { pedidoModel };
-
-

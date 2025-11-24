@@ -14,20 +14,17 @@ const entregaController = {
     },
     adicionarEntregas: async (req, res) => {
         try {
-            const { valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipoEntrega, statusEntrega } = req.body;
-            if (!valorDistancia || !valorPeso || !acrescimo || !taxaExtra || !valorFinal || !desconto || !tipoEntrega || !statusEntrega || tipoEntrega === "normal" || tipoEntrega === "urgente" || valorDistancia < 0 || valorPeso < 0) {
+            const { Pedido, Distancia, Peso, Acrescimo, Taxa, Desconto, Tipo, Status } = req.body;
+            if (!Distancia || !Peso || !Acrescimo || !Taxa || !Desconto || !Tipo || !Status || tipoEntrega === "normal" || tipoEntrega === "urgente" || valorDistancia < 0 || valorPeso < 0) {
                 return res.status(400).json({ message: 'Dados invalidos' })
-
             }
-            if (tipoEntrega === "Urgente") {
-                
-            }
-            const resultado = await clienteModel.inserirCliente(nome, cpf, tel, email, endereco)
+            const resultado = await entregaModel.inserirEntrega(valorDistancia, valorPeso, acrescimo, taxaExtra, desconto, tipoEntrega, statusEntrega)
             if (resultado.affectedRows === 1 && resultado.insertId !== 0) {
                 res.status(201).json({ message: 'Registro incluido com sucesso', result: resultado })
             } else {
                 throw new Error('ocorreu um erro ao incluir o registro')
             }
+            const ValorFinal = {} 
         } catch (error) {
             console.error(error);
             res.status(500).json({

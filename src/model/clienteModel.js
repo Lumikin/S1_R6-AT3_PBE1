@@ -28,7 +28,8 @@ const clienteModel = {
 
     selecionarTodos: async () => {
         const sql = 'SELECT * FROM clientes;';
-        const [rows] = await pool.query(sql)
+        const [rows] = await pool.query(sql);
+        console.log(rows);
         return rows;
     },
     selecionarUm: async (pId) => {

@@ -6,14 +6,29 @@ const entregaModel = {
         console.log(rows);
         return rows;
     },
-    inserirEntrega: async (pValorDistancia, pValorPeso, pAcrescimo, pTaxa, pValorFinal, pDesconto, pTipo, pStatus) => {
-        const sql = 'INSERT INTO clientes (valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipoEntrega, statusEntrega  ) VALUES (?,?,?,?,?,?,?,?);';
-        const values = [pValorDistancia, pValorPeso, pAcrescimo, pTaxa, pValorFinal, pDesconto, pTipo, pStatus];
+    inserirEntrega: async (pPedido, pDistancia, pPeso, pAcrescimo, pTaxa, pValorFinal, pDesconto, pTipo, pStatus) => {
+        const sql = 'INSERT INTO clientes (idPedido, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipoEntrega, statusEntrega  ) VALUES (?,?,?,?,?,?,?,?);';
+        const values = [pPedido, pDistancia, pPeso, pAcrescimo, pTaxa, pValorFinal, pDesconto, pTipo, pStatus];
         const [rows] = await pool.query(sql, values);
         console.log(rows);
         return rows;
     },
+
+    //CONSULTA:
+    consultarPrecoKG: async (pId) => {
+        const sql = "SELECT valorKg FROM pedidos WHERE idPedidos = ?;";
+        const values = [pId]
+        const [rows] = await pool.query(sql, pId);
+        return rows;
+    },
+
+    consultarPrecoKM: async () => {
+        const sql = "SELECT valorKm FROM pedidos WHERE idPedidos = ?;";
+        const [rows] = await pool.query(sql);
+        return rows;
+    },
 }
+
 
 
 module.exports = { entregaModel }

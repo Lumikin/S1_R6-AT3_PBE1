@@ -2,6 +2,7 @@ const pool = require('../config/db');
 
 const clienteModel = {
     // VERIFICADORES:
+
     // CPF:
     verificarCPF: async (consultarCPF) => {
         const sql = 'SELECT * FROM clientes WHERE cpfCliente=?;';
@@ -21,6 +22,8 @@ const clienteModel = {
         return rows;
     },
 
+    // --------------------------------------------------------------------------------------------- //
+
     // SELECIONAR:
 
     selecionarTodos: async () => {
@@ -29,7 +32,7 @@ const clienteModel = {
         return rows;
     },
     selecionarUm: async (pId) => {
-        const sql = 'SELECT * FROM clientes WHERE idCliente = ?;';
+        const sql = 'SELECT * FROM clientes WHERE idClientes = ?;';
         const values = [pId]
         const [rows] = await pool.query(sql, values)
         return rows;
@@ -44,7 +47,20 @@ const clienteModel = {
         console.log(rows);
         return rows;
     },
-
+    //REMOVER:
+    deleteCliente: async (pID) => {
+        const sql = 'DELETE FROM clientes WHERE idClientes = ?;';
+        const values = [pID];
+        const [rows] = await pool.query(sql, values)
+        return rows;
+    },
+    alterarCliente: async (pNome, pCpf, pTel, pEmail, pEndereco, pId) => {
+        const sql = 'UPDATE clientes SET nomeCliente=?, cpfCliente=?, telefoneCliente=?, emailCliente=?, enderecoCliente=? WHERE idClientes=?;';
+        const values = [pNome, pCpf, pTel, pEmail, pEndereco, pId];
+        const [rows] = await pool.query(sql, values);
+        console.log(rows);
+        return rows;
+    }
 
 }
 

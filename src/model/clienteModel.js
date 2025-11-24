@@ -55,6 +55,22 @@ const clienteModel = {
         const [rows] = await pool.query(sql, values)
         return rows;
     },
+
+    /**
+     * @async 
+     * @param {String} pNome 
+     * @param {String} pCpf 
+     * @param {String} pTel 
+     * @param {String} pEmail 
+     * @param {String} pEndereco 
+     * @param {String} pId 
+     * @returns
+     * @example
+     *  
+     * 
+     *  
+     */
+
     alterarCliente: async (pNome, pCpf, pTel, pEmail, pEndereco, pId) => {
         const sql = 'UPDATE clientes SET nomeCliente=?, cpfCliente=?, telefoneCliente=?, emailCliente=?, enderecoCliente=? WHERE idClientes=?;';
         const values = [pNome, pCpf, pTel, pEmail, pEndereco, pId];

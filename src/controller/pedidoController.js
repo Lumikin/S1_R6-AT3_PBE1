@@ -53,7 +53,7 @@ const pedidoController = {
             return res.status(500).json({ mensagem: 'Erro ao buscar pedido.', detalhes: error.message });
         }
     },
-    
+
     // exclui um pedido pelo ID
     excluirPedido: async (req, res) => {
         try {
@@ -92,7 +92,7 @@ const pedidoController = {
         }
     },
 
-        // atualiza um pedido pelo ID
+    // atualiza um pedido pelo ID
     atualizarPedido: async (req, res) => {
         try {
             const { idPedido } = req.params;
@@ -113,16 +113,16 @@ const pedidoController = {
         }
     },
 
-        // busca tipos de entrega
+    // busca tipos de entrega
     tipoEntrega: async (req, res) => {
         try {
-            const tipos =  await pedidoModel.tipoEntrega();
+            const tipos = await pedidoModel.tipoEntrega();
             return res.status(200).json(tipos);
         } catch (error) {
             console.error(error);
             return res.status(500).json({ mensagem: 'Erro ao buscar tipos de entrega.', detalhes: error.message });
-        }   
-    }    
+        }
+    }
 };
 
 

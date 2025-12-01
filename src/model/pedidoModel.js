@@ -169,7 +169,7 @@ const pedidoModel = {
         const sql = 'SELECT * FROM tipoEntrega;';
         const [rows] = await pool.query(sql);
         return rows;
-    }   
+    }
 };
 
 module.exports = { pedidoModel };

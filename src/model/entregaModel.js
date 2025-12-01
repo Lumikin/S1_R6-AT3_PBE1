@@ -1,17 +1,42 @@
 const pool = require("../config/db");
 const entregaModel = {
+    /**
+     * 
+     * @returns {Promise<*>}
+     * 
+     * Selecionar todas as entregas
+     */
+    // Selecionar todas as entregas
     selecionarTodasEntregas: async () => {
         const sql = "SELECT * FROM entregas;";
         const [rows] = await pool.query(sql);
         console.log(rows);
         return rows;
     },
+
+    /**
+     * 
+     * @param {number} id       
+     * @returns {Promise<*>}
+     * Selecionar entrega por ID
+     * //// Selecionar entrega por ID
+     */
+    // Selecionar entrega por ID
     selecionarEntrega: async (id) => {
         const sql = "SELECT * FROM entregas WHERE idEntregas = ?"
         const values = [id]
         const [rows] = await pool.query(sql, values)
         return rows;
     },
+
+    /**
+     * 
+     * @param {number} fkPedido 
+     * @param {string} status
+     * @returns {Promise<*>}
+     * Incluir nova entrega
+     */
+    // Incluir nova entrega
     incluirEntregas: async (fkPedido, status) => {
         const connection = await pool.getConnection();
         await connection.beginTransaction();
@@ -22,6 +47,7 @@ const entregaModel = {
                 [fkPedido]
             );
 
+            // Verifica se o pedido existe
             if (rowsPedido.length === 0) {
                 console.log(" Não foi possivel absorver o pedido ")
                 throw Error;
@@ -34,7 +60,7 @@ const entregaModel = {
             const valorBase = valorDistancia + valorPeso;
             const tipoEntrega = pedido.tipoEntrega
 
-
+            // Cálculo do acréscimo baseado no tipo de entrega
             let acrescimo = 0;
             if (tipoEntrega == "urgente") {
                 acrescimo = valorBase * 0.2;
@@ -44,11 +70,12 @@ const entregaModel = {
 
             const valorFinalParcial = valorBase + acrescimo;
 
+            // Cálculo do desconto para valores acima de R$ 500,00
             let desconto = 0;
             if (valorFinalParcial > 500) {
                 desconto = valorFinalParcial * 0.1;
             }
-
+            // Cálculo da taxa extra para cargas acima de 50kg
             let taxaExtra = 0;
             if (pedido.pesoCarga > 50) {
                 taxaExtra = 15;
@@ -56,6 +83,7 @@ const entregaModel = {
 
             const valorFinal = valorFinalParcial - desconto + taxaExtra;
 
+            // Inserção da nova entrega no banco de dados
             const sql =
                 "INSERT INTO entregas (idPedido, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipoEntrega, statusEntrega) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?); ";
             const values = [fkPedido, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipoEntrega, status];
@@ -68,6 +96,16 @@ const entregaModel = {
             throw error;
         }
     },
+
+    /**
+     * 
+     * @param {number} pID
+     * @param {string} pStatus
+     * @returns {Promise<*>}
+     * Atualizar status da entrega
+     * /// Atualizar status da entrega
+     */
+    // Deletar cliente
     deleteCliente: async (pID) => {
         const sql = 'DELETE FROM entregas WHERE idEntregas = ?;';
         const values = [pID];

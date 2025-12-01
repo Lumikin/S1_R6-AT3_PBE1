@@ -2,7 +2,7 @@ const { clienteModel } = require('../model/clienteModel');
 const clienteController = {
 
     // SELECIONAR TODOS OS CLIENTES:
-    selecionarTodosClientes: async (req, res) => {
+    selecionarTodos: async (req, res) => {
         try {
             const resultado = await clienteModel.selecionarTodos();
             // Verificar se há registros na tabela
@@ -16,21 +16,25 @@ const clienteController = {
         }
     },
     // SELECIONAR CLIENTE POR ID:
-    selecionarId: async (req, res) => {
+    selecionarCliente: async (req, res) => {
         try {
             const id = Number(req.params.idCliente)
             if (!id || !Number.isInteger(id)) {
                 return res.status(400).json({ message: "Forneça um ID valido!" })
             }
+<<<<<<< HEAD
             // CONSULTAR CLIENTE
             const resultado = clienteModel.selecionarUm(id)
             // Verificar se há registros na tabela
+=======
+            const resultado = clienteModel.selecionarCliente(id)
+>>>>>>> 61530bcf2a733b9fd628b45855b07dc4b0e6dc43
             if (!resultado || resultado.length === 0) {
                 return res.status(200).json({ message: "Registro não encontrado!" })
             }
-            else {
-                return res.status(200).json({ message: "Registro encontrado!", data: resultado })
-            }
+
+            return res.status(200).json({ message: "Registro encontrado!", data: resultado })
+
         } catch (error) {
             console.error(error)
             res.status(500).json({ Message: 'Ocorreu um erro no servidor.', errorMessage: error.message })
@@ -81,8 +85,12 @@ const clienteController = {
             if (!nome || nome.trim().length < 3 || !String(nome) || !Number(cpf) || cpf.length != 11 || !tel || tel.length > 13 || tel.length < 8 || !email || !endereco) {
                 return res.status(400).json({ message: "Verifique os dados enviados e tente novamente!" });
             }
+<<<<<<< HEAD
             // Verificar se o cliente existe
             const ClienteAtual = await clienteModel.selecionarUm(id)
+=======
+            const ClienteAtual = await clienteModel.selecionarCliente(id)
+>>>>>>> 61530bcf2a733b9fd628b45855b07dc4b0e6dc43
             if (!ClienteAtual || ClienteAtual.length === 0) {
                 throw new Error("Registro não localizado");
             }
@@ -125,7 +133,7 @@ const clienteController = {
             if (!id || !Number.isInteger(id)) {
                 return res.status(400).json({ message: "Forneça um ID valido!" })
             }
-            const consulta = await clienteModel.selecionarUm(id);
+            const consulta = await clienteModel.selecionarCliente(id);
             if (consulta.length === 0) {
                 throw new Error("Registro não localizado");
 

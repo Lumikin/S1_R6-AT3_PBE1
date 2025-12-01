@@ -2,17 +2,19 @@ const { pedidoModel } = require("../model/pedidoModel");
 
 const pedidoController = {
 
+    // cria um novo pedido
     criarPedido: async (req, res) => {
         try {
             const { idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg } = req.body;
 
-
+            // Validação básica dos dados recebidos
             if (!idClientes || !dataPedido || !distanciaPedido || !pesoCarga || !valorKm || !valorKg) {
                 return res.status(400).json({
                     erro: "Todos os campos obrigatórios devem ser enviados."
                 });
             };
 
+            // Insere o novo pedido no banco de dados
             const resultado = await pedidoModel.insertPedido(idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg);
             console.log(resultado);
 
@@ -30,13 +32,18 @@ const pedidoController = {
         }
     },
 
+    // busca um pedido pelo ID
     buscarPorId: async (req, res) => {
         try {
             const { idPedido } = req.params;
+
+            // Valida o ID do pedido
             if (!idPedido) {
                 return res.status(400).json({ mensagem: 'O id do pedido é obrigatório.' });
             }
             const pedido = await pedidoModel.buscarPorId(idPedido);
+
+            // Verifica se o pedido foi encontrado
             if (!pedido) {
                 return res.status(404).json({ mensagem: 'Pedido não encontrado.' });
             }
@@ -46,21 +53,25 @@ const pedidoController = {
             return res.status(500).json({ mensagem: 'Erro ao buscar pedido.', detalhes: error.message });
         }
     },
-
+    
+    // exclui um pedido pelo ID
     excluirPedido: async (req, res) => {
         try {
             const { idPedido } = req.params;
 
+            // Valida o ID do pedido
             if (!idPedido) {
                 return res.status(400).json({ mensagem: 'O id do pedido é obrigatório.' });
             }
 
             const pedidosExistente = await pedidoModel.buscarPorId(idPedido);
 
+            // Verifica se o pedido existe
             if (!pedidosExistente) {
                 return res.status(404).json({ message: 'Cliente não encontrado.' });
             }
 
+            // Exclui o pedido
             await pedidoModel.excluirPedido(idPedido);
             return res.status(200).json({ mensagem: 'Pedido excluído com sucesso.' });
 
@@ -70,6 +81,7 @@ const pedidoController = {
         }
     },
 
+    // busca todos os pedidos
     buscarTodosPedidos: async (req, res) => {
         try {
             const pedidos = await pedidoModel.selecionarTodosPedidos();
@@ -80,13 +92,18 @@ const pedidoController = {
         }
     },
 
+        // atualiza um pedido pelo ID
     atualizarPedido: async (req, res) => {
         try {
             const { idPedido } = req.params;
             const { idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg } = req.body;
+
+            // Valida o ID do pedido
             if (!idPedido) {
                 return res.status(400).json({ mensagem: 'O id do pedido é obrigatório.' });
             }
+
+            // Verifica se o pedido existe
             await pedidoModel.atualizarPedido(idPedido, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg);
             return res.status(200).json({ mensagem: 'Pedido atualizado com sucesso.' });
 
@@ -94,7 +111,18 @@ const pedidoController = {
             console.error(error);
             return res.status(500).json({ mensagem: 'Erro ao atualizar pedido.', detalhes: error.message });
         }
-    }
+    },
+
+        // busca tipos de entrega
+    tipoEntrega: async (req, res) => {
+        try {
+            const tipos =  await pedidoModel.tipoEntrega();
+            return res.status(200).json(tipos);
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ mensagem: 'Erro ao buscar tipos de entrega.', detalhes: error.message });
+        }   
+    }    
 };
 
 

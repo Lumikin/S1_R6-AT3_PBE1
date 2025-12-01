@@ -9,4 +9,5 @@ pedidoRoutes.get('/pedidos', pedidoController.buscarTodosPedidos);
 pedidoRoutes.put('/pedidos/:idPedido', pedidoController.atualizarPedido);
 pedidoRoutes.get('/pedidos/:idPedido', pedidoController.buscarPorId);
 
+
 module.exports = { pedidoRoutes };

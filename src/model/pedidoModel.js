@@ -151,7 +151,25 @@ const pedidoModel = {
         const values = [idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, idPedidos];
         const [rows] = await pool.query(sql, values);
         return rows;
-    }
+    },
+
+    /**
+     * 
+     * @returns {Promise<Array>} Lista de todos os tipos de entrega.
+     *
+     * @example
+     * const tipos = await pedidoModel.tipoEntrega();
+     * // Saída:
+     * // [
+     * //   { idTipoEntrega: 1, descricao: "Normal" },
+     * //   { idTipoEntrega: 2, descricao: "Expressa" }
+     * // ]
+     */
+    tipoEntrega: async () => {
+        const sql = 'SELECT * FROM tipoEntrega;';
+        const [rows] = await pool.query(sql);
+        return rows;
+    }   
 };
 
 module.exports = { pedidoModel };

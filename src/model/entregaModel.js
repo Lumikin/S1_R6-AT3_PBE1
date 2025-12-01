@@ -37,52 +37,17 @@ const entregaModel = {
      * Incluir nova entrega
      */
     // Incluir nova entrega
+
+    consultarPedido: async (fkPedido) => {
+        "SELECT distanciaPedido, valorKm, pesoCarga, valorKg, tipoEntrega FROM pedidos WHERE idPedidos = ?",
+            [fkPedido]
+
+    },
+
     incluirEntregas: async (fkPedido, status) => {
-        const connection = await pool.getConnection();
-        await connection.beginTransaction();
-
-        try {
-            const [rowsPedido] = await connection.query(
-                "SELECT distanciaPedido, valorKm, pesoCarga, valorKg, tipoEntrega FROM pedidos WHERE idPedidos = ?",
-                [fkPedido]
-            );
-
-            // Verifica se o pedido existe
-            if (rowsPedido.length === 0) {
-                throw new Error("Não foi possivel localizar o pedido")
-            }
-
-            const pedido = rowsPedido[0];
-
-            const valorDistancia = pedido.valorKm * pedido.distanciaPedido;
-            const valorPeso = pedido.valorKg * pedido.pesoCarga;
-            const valorBase = valorDistancia + valorPeso;
-            const tipoEntrega = pedido.tipoEntrega
-
-            // Cálculo do acréscimo baseado no tipo de entrega
-            let acrescimo = 0;
-            if (tipoEntrega == "urgente") {
-                acrescimo = valorBase * 0.2;
-            } else {
-                acrescimo = 0
-            }
-
-            const valorFinalParcial = valorBase + acrescimo;
-
-            // Cálculo do desconto para valores acima de R$ 500,00
-            let desconto = 0;
-            if (valorFinalParcial > 500) {
-                desconto = valorFinalParcial * 0.1;
-            }
-            // Cálculo da taxa extra para cargas acima de 50kg
-            let taxaExtra = 0;
-            if (pedido.pesoCarga > 50) {
-                taxaExtra = 15;
-            }
-
-            const valorFinal = valorFinalParcial - desconto + taxaExtra;
-
+inserirEntrega: async (fkPedido,status) => {
             // Inserção da nova entrega no banco de dados
+         try{
             const sql =
                 "INSERT INTO entregas (idPedido, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipoEntrega, statusEntrega) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?); ";
             const values = [fkPedido, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipoEntrega, status];
@@ -94,7 +59,9 @@ const entregaModel = {
             await connection.rollback();
             throw error;
         }
-    },
+    }
+
+},
 
     /**
      * 

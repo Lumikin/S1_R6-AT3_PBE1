@@ -142,9 +142,9 @@ const clienteModel = {
         * }
      */
     //INSERIR:
-    inserirCliente: async (pNome, pCpf, pTel, pEmail, pEndereco) => {
-        const sql = 'INSERT INTO clientes (nomeCliente, cpfCliente, telefoneCliente, emailCliente, enderecoCliente) VALUES (?,?,?,?,?);';
-        const values = [pNome, pCpf, pTel, pEmail, pEndereco];
+    inserirCliente: async (nome, cpf, email, tel, logradouro, numero, bairro, estado, CEP) => {
+        const sql = 'INSERT INTO clientes (nomeCliente, telefoneCliente, cpfCliente, emailCliente, logradouro, numero, bairro, estado, CEP) VALUES (?,?,?,?,?,?,?,?,?)';
+        const values = [nome, tel, cpf, email, logradouro, numero, bairro, estado, CEP];
         const [rows] = await pool.query(sql, values);
         console.log(rows);
         return rows;
@@ -191,9 +191,9 @@ const clienteModel = {
      *  
      */
     // ATUALIZAR
-    alterarCliente: async (pNome, pCpf, pTel, pEmail, pEndereco, pId) => {
-        const sql = 'UPDATE clientes SET nomeCliente=?, cpfCliente=?, telefoneCliente=?, emailCliente=?, enderecoCliente=? WHERE idClientes=?;';
-        const values = [pNome, pCpf, pTel, pEmail, pEndereco, pId];
+    alterarCliente: async (nome, tel, email, cpf, logradouro, numero, bairro, estado, CEP, idCliente) => {
+        const sql = 'UPDATE clientes SET nomeCliente=?, cpfCliente=?, telefoneCliente=?, emailCliente=?, logradouro=?, numero=?, bairro=?, estado=?, CEP=? WHERE idClientes=?;';
+        const values = [ nome, tel, email, cpf, logradouro, numero, bairro, estado, CEP, idCliente];
         const [rows] = await pool.query(sql, values);
         console.log(rows);
         return rows;

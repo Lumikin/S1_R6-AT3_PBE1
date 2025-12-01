@@ -41,10 +41,9 @@ const clienteController = {
     // ADICIONAR UM CLIENTE:
     inserirCliente: async (req, res) => {
         try {
-            const { nome, cpf, tel, email, endereco } = req.body;
-            if (!nome || nome.length < 3 || !String(nome) || !Number(cpf) || cpf.length != 11 || !tel || tel.length > 13 || tel.length < 8 || !email || !endereco) {
-                return res.status(400).json({ message: 'Dados invalidos' }) //^== VERIFICAR SE TODAS AS VARIAVEIS SÃO VALIDAS EM SEUS ELEMENTOS 
-
+            const { nome, cpf, email, tel, logradouro, numero, bairro, estado, CEP } = req.body;
+            if (!nome || nome.trim().length < 3 || !String(nome) || !Number(cpf) || cpf.length != 11 || !tel || tel.length > 13 || tel.length < 8 || !email || !logradouro || !numero || isNaN(numero) || numero < 3 || !bairro || bairro.length < 3 || !estado || estado.length < 3 || !CEP || isNaN(CEP) || CEP.length != 8) {
+                return res.status(400).json({ message: "Verifique os dados enviados e tente novamente!" });
             }
             // CONSULTAR CPF:
             const consultarCPF = await clienteModel.verificarCPF(cpf)
@@ -57,7 +56,7 @@ const clienteController = {
                 return res.status(409).json({ message: "Email já esta cadastrado!" })
             }
             // INSERIR CLIENTE
-            const resultado = await clienteModel.inserirCliente(nome, cpf, tel, email, endereco)
+            const resultado = await clienteModel.inserirCliente(nome, cpf, email, tel, logradouro, numero, bairro, estado, CEP)
             if (resultado.affectedRows === 1 && resultado.insertId !== 0) {
                 res.status(201).json({ message: 'Registro incluido com sucesso', data: resultado })
             } else {
@@ -76,14 +75,13 @@ const clienteController = {
     alterarCliente: async (req, res) => {
         try {
             const id = Number(req.params.idCliente)
-            let { nome, cpf, email, tel, endereco } = req.body
+            let { nome, cpf, email, tel, logradouro, numero, bairro, estado, CEP } = req.body
             nome = nome.trim();
-            // VALIDAÇÕES DOS DADOS
-            if (!nome || nome.trim().length < 3 || !String(nome) || !Number(cpf) || cpf.length != 11 || !tel || tel.length > 13 || tel.length < 8 || !email || !endereco) {
+            if (!nome || nome.trim().length < 3 || !String(nome) || !Number(cpf) || cpf.length != 11 || !tel || tel.length > 13 || tel.length < 8 || !email || !logradouro || !numero || isNaN(numero) || numero < 3 || !bairro || bairro.length < 3 || !estado || estado.length < 3 || !CEP || isNaN(CEP) || CEP.length != 8) {
                 return res.status(400).json({ message: "Verifique os dados enviados e tente novamente!" });
             }
             // Verificar se o cliente existe
-           const ClienteAtual = await clienteModel.selecionarUm(id)
+            const ClienteAtual = await clienteModel.selecionarUm(id)
             if (!ClienteAtual || ClienteAtual.length === 0) {
                 throw new Error("Registro não localizado");
             }
@@ -91,8 +89,11 @@ const clienteController = {
             const novoCpf = cpf ?? ClienteAtual[0].cpfCliente;
             const novoEmail = email ?? ClienteAtual[0].emailCliente;
             const novoTel = tel ?? ClienteAtual[0].telefoneCliente;
-            const novoEndereco = endereco ?? ClienteAtual[0].enderecoCliente;
-            console.log(cpf, nome)
+            const novoLogradouro = logradouro ?? ClienteAtual[0].logradouro;
+            const novonumero = numero ?? ClienteAtual[0].numero;
+            const novoBairro = bairro ?? ClienteAtual[0].bairro;
+            const novoEstado = estado ?? ClienteAtual[0].estado;
+            const novoCEP = CEP ?? ClienteAtual[0].CEP;
             const consultarCPF = await clienteModel.verificarCPF(novoCpf)
             if (consultarCPF.length > 0) {
                 return res.status(409).json({ message: "Cpf já esta cadastrado!" })
@@ -105,7 +106,7 @@ const clienteController = {
 
             }
             // Realizar a atualização
-            const resultado = await clienteModel.alterarCliente(novoNome, novoCpf, novoTel, novoEmail, novoEndereco, id);
+            const resultado = await clienteModel.alterarCliente(novoNome, novoTel, novoCpf, novoEmail, novoLogradouro, novonumero, novoBairro, novoEstado, novoCEP, id);
             if (resultado.changedRows === 0) {
                 throw new Error("Ocorreu um erro ao atualizar o produto");
 

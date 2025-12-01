@@ -34,10 +34,42 @@ const entregaController = {
                     message: "Voce deve inserir um numero valido do pedido!!",
                 });
             }
+            if (rowsPedido.length === 0) {
+                throw new Error("Não foi possivel localizar o pedido")
+            }
+            const ConsultaPedido = entregaModel.consultarPedido(fkPedido)
+            const pedido = fkPedido.rowsPedido[0];
 
+            const valorDistancia = pedido.valorKm * pedido.distanciaPedido;
+            const valorPeso = pedido.valorKg * pedido.pesoCarga;
+            const valorBase = valorDistancia + valorPeso;
+            const tipoEntrega = pedido.tipoEntrega
+
+            // Cálculo do acréscimo baseado no tipo de entrega
+            let acrescimo = 0;
+            if (tipoEntrega == "urgente") {
+                acrescimo = valorBase * 0.2;
+            } else {
+                acrescimo = 0
+            }
+
+            const valorFinalParcial = valorBase + acrescimo;
+
+            // Cálculo do desconto para valores acima de R$ 500,00
+            let desconto = 0;
+            if (valorFinalParcial > 500) {
+                desconto = valorFinalParcial * 0.1;
+            }
+            // Cálculo da taxa extra para cargas acima de 50kg
+            let taxaExtra = 0;
+            if (pedido.pesoCarga > 50) {
+                taxaExtra = 15;
+            }
+
+            const valorFinal = valorFinalParcial - desconto + taxaExtra;
             // valida o status da entrega
-            if (status !== "entregue" && status !== "transitando" && status !== "cancelado") {
-                return res.status(400).json({ message: "Verifique se os status de entrega estao digitados: entregue, transitando ou cancelado", });
+            if (status !== "entregue" && status !== "transitando" && status !== "cancelado" && status !== "espera") {
+                return res.status(400).json({ message: "Verifique se os status de entrega estao digitados: entregue, transitando, espera ou cancelado", });
             }
             // incluir a nova entrega
             const resultado = await entregaModel.incluirEntregas(fkPedido, status);
@@ -50,6 +82,7 @@ const entregaController = {
             return res.status(500).json({ message: "Erro no servidor." });
         }
     },
+
     deletarEntrega: async (req, res) => {
         try {
             const id = Number(req.params.id)
@@ -76,6 +109,10 @@ const entregaController = {
         } catch (error) {
             console.error(error)
             res.status(500).json({ Message: 'Ocorreu um erro no servidor.', errorMessage: error.message })
+
+            if (error == (1451)) {
+                return res.status(500).json({ Message: 'Ocorreu um erro no servidor.', errorMessage: error.message })
+            }
         }
     }
 };

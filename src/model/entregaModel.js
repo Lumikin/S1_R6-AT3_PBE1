@@ -1,34 +1,78 @@
-const pool = require('../config/db');
+const pool = require("../config/db");
 const entregaModel = {
     selecionarTodasEntregas: async () => {
-        const sql = 'SELECT * FROM entregas;';
+        const sql = "SELECT * FROM entregas;";
         const [rows] = await pool.query(sql);
         console.log(rows);
         return rows;
     },
-    inserirEntrega: async (pPedido, pDistancia, pPeso, pAcrescimo, pTaxa, pValorFinal, pDesconto, pTipo, pStatus) => {
-        const sql = 'INSERT INTO clientes (idPedido, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipoEntrega, statusEntrega  ) VALUES (?,?,?,?,?,?,?,?);';
-        const values = [pPedido, pDistancia, pPeso, pAcrescimo, pTaxa, pValorFinal, pDesconto, pTipo, pStatus];
-        const [rows] = await pool.query(sql, values);
-        console.log(rows);
+    selecionarEntrega: async (id) => {
+        const sql = "SELECT * FROM entregas WHERE idEntregas = ?"
+        const values = [id]
+        const [rows] = await pool.query(sql, values)
         return rows;
     },
+    incluirEntregas: async (fkPedido, status) => {
+        const connection = await pool.getConnection();
+        await connection.beginTransaction();
 
-    //CONSULTA:
-    consultarPrecoKG: async (pId) => {
-        const sql = "SELECT valorKg FROM pedidos WHERE idPedidos = ?;";
-        const values = [pId]
-        const [rows] = await pool.query(sql, pId);
+        try {
+            const [rowsPedido] = await connection.query(
+                "SELECT distanciaPedido, valorKm, pesoCarga, valorKg, tipoEntrega FROM pedidos WHERE idPedidos = ?",
+                [fkPedido]
+            );
+
+            if (rowsPedido.length === 0) {
+                console.log(" Não foi possivel absorver o pedido ")
+                throw Error;
+            }
+
+            const pedido = rowsPedido[0];
+
+            const valorDistancia = pedido.valorKm * pedido.distanciaPedido;
+            const valorPeso = pedido.valorKg * pedido.pesoCarga;
+            const valorBase = valorDistancia + valorPeso;
+            const tipoEntrega = pedido.tipoEntrega
+
+
+            let acrescimo = 0;
+            if (tipoEntrega == "urgente") {
+                acrescimo = valorBase * 0.2;
+            } else {
+                acrescimo = 0
+            }
+
+            const valorFinalParcial = valorBase + acrescimo;
+
+            let desconto = 0;
+            if (valorFinalParcial > 500) {
+                desconto = valorFinalParcial * 0.1;
+            }
+
+            let taxaExtra = 0;
+            if (pedido.pesoCarga > 50) {
+                taxaExtra = 15;
+            }
+
+            const valorFinal = valorFinalParcial - desconto + taxaExtra;
+
+            const sql =
+                "INSERT INTO entregas (idPedido, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipoEntrega, statusEntrega) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+            const values = [fkPedido, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipoEntrega, status];
+            const [rows] = await connection.query(sql, values);
+            await connection.commit();
+            connection.release();
+            return rows;
+        } catch (error) {
+            await connection.rollback();
+            throw error;
+        }
+    },
+    deleteCliente: async (pID) => {
+        const sql = 'DELETE FROM entregas WHERE idEntregas = ?;';
+        const values = [pID];
+        const [rows] = await pool.query(sql, values)
         return rows;
     },
-
-    consultarPrecoKM: async () => {
-        const sql = "SELECT valorKm FROM pedidos WHERE idPedidos = ?;";
-        const [rows] = await pool.query(sql);
-        return rows;
-    },
-}
-
-
-
-module.exports = { entregaModel }
+};
+module.exports = { entregaModel };

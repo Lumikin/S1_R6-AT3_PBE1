@@ -54,7 +54,7 @@ const clienteController = {
             }
             const resultado = await clienteModel.inserirCliente(nome, cpf, tel, email, endereco)
             if (resultado.affectedRows === 1 && resultado.insertId !== 0) {
-                res.status(201).json({ message: 'Registro incluido com sucesso', result: resultado })
+                res.status(201).json({ message: 'Registro incluido com sucesso', data: resultado })
             } else {
                 throw new Error('ocorreu um erro ao incluir o registro')
             }

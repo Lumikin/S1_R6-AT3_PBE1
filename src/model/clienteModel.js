@@ -186,7 +186,17 @@ const clienteModel = {
      * @param {String} pId 
      * @returns
      * @example
-     *  
+     * const resultado = await clienteModel.alterarCliente('Maria Souza', '09876543211', '11888888888', ', 'Avenida B, 456', 2);
+     * // Saída:
+     * // { 
+     *  fieldCount: 0,
+     *  affectedRows: 1,
+     *  insertId: 0,
+     * info: "",
+     * serverStatus: 2,
+     * warningStatus: 0,
+     * changedRows: 1
+     * }
      * 
      *  
      */

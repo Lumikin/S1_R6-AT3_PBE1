@@ -2,6 +2,27 @@ const { pedidoModel } = require("../model/pedidoModel");
 
 const pedidoController = {
 
+    /**
+     * 
+     * @param {Request} req 
+     * @param {Response} res 
+     * @returns 
+     * @example
+     * const novoPedido = await pedidoController.criarPedido(req, res);
+     * // Saída:
+     * // {
+     * //   mensagem: "Pedido criado com sucesso!",
+     * //   data: {
+     * //     fieldCount: 0,
+     * //     affectedRows: 1,
+     * //     insertId: 5,
+     * //     info: "",
+     * //     serverStatus: 2,
+     * //     warningStatus: 0,
+     * //     changedRows: 0
+     * //   }
+     * // }
+     */
     // cria um novo pedido
     criarPedido: async (req, res) => {
         try {
@@ -34,6 +55,25 @@ const pedidoController = {
         }
     },
 
+    /**
+     * 
+     * @param {Request} req 
+     * @param {Response} res 
+     * @returns 
+     * @example
+     * const pedidoEncontrado = await pedidoController.buscarPorId(req, res);
+     * // Saída:
+     * // {
+     * //   idPedido: 3,
+     * //   idClientes: 2,
+     * //   dataPedido: "2025-10-15",
+     * //   distanciaPedido: 150,
+     * //   pesoCarga: 20,
+     * //   valorKm: 1.5,
+     * //   valorKg: 2.0,
+     * //   tipoEntrega: "urgente"
+     * // } 
+     */
     // busca um pedido pelo ID
     buscarPorId: async (req, res) => {
         try {
@@ -56,6 +96,20 @@ const pedidoController = {
         }
     },
 
+    /**
+     * 
+     * @param {Request} req 
+     * @param {Response} res 
+     * @returns 
+     * @example
+     * const pedidoExcluido = await pedidoController.excluirPedido(req, res);
+     * // Saída:
+     * // {
+     * //   mensagem: "Pedido excluído com sucesso."
+     * // }
+     * 
+     * 
+     */
     // exclui um pedido pelo ID
     excluirPedido: async (req, res) => {
         try {
@@ -83,6 +137,37 @@ const pedidoController = {
         }
     },
 
+    /**
+     * 
+     * @param {Request} req 
+     * @param {Response} res 
+     * @returns 
+     * @example
+     * const todosPedidos = await pedidoController.buscarTodosPedidos(req, res);
+     * // Saída:
+     * // [
+     * //   {
+     * //     idPedido: 1,
+     * //     idClientes: 1,
+     * //     dataPedido: "2025-10-10",
+     * //     distanciaPedido: 100,
+     * //     pesoCarga: 10,
+     * //     valorKm: 1.0,
+     * //     valorKg: 2.0,
+     * //     tipoEntrega: "normal"
+     * //   },
+     * //   {
+     * //     idPedido: 2,
+     * //     idClientes: 2,
+     * //     dataPedido: "2025-10-12",
+     * //     distanciaPedido: 200,
+     * //     pesoCarga: 30,
+     * //     valorKm: 1.2,
+     * //     valorKg: 1.5,
+     * //     tipoEntrega: "urgente"
+     * //   }
+     * // ]
+     */
     // busca todos os pedidos
     buscarTodosPedidos: async (req, res) => {
         try {
@@ -94,6 +179,27 @@ const pedidoController = {
         }
     },
 
+    /**
+     * 
+     * @param {Request} req 
+     * @param {Response} res 
+     * @returns 
+     * @example
+     * const pedidoAtualizado = await pedidoController.atualizarPedido(req, res);
+     * // Saída:
+     * // {
+     * //   mensagem: "Pedido atualizado com sucesso.",
+     * //   data: {
+     * //     fieldCount: 0,
+     * //     affectedRows: 1,
+     * //     insertId: 0,
+     * //     info: "",
+     * //     serverStatus: 2,
+     * //     warningStatus: 0,
+     * //     changedRows: 1
+     * //   }
+     * // }
+     */
     // atualiza um pedido pelo ID
     atualizarPedido: async (req, res) => {
         try {

@@ -1,6 +1,33 @@
 const { clienteModel } = require("../model/clienteModel")
 const clienteController = {
 
+/**
+     * 
+     * @param {Request} req   
+     * @param {Response} res
+     * @returns
+     * @example
+     * const clientes = await clienteController.selecionarTodos(req, res);
+     * // Saída:
+     * // [
+     * //   {
+     * //     idClientes: 1,
+     * //     nomeCliente: "João Silva",
+     * //     cpfCliente: "12345678900",
+     * //     telefoneCliente: "11999999999",
+     * //     emailCliente: "
+     * //     enderecoCliente: "Rua A, 123"
+     * //   },
+     * //   {
+     * //     idClientes: 2,
+     * //     nomeCliente: "Maria Souza",
+     * //     cpfCliente: "09876543211",
+     * //     telefoneCliente: "21988888888",
+     * //     emailCliente: "
+     * //     enderecoCliente: "Avenida B, 456"
+     * //   }
+     * // ] 
+     */ 
     // SELECIONAR TODOS OS CLIENTES:
     selecionarTodos: async (req, res) => {
         try {
@@ -15,6 +42,26 @@ const clienteController = {
             res.status(500).json({ message: 'Ocorreu um erro no servidor', errorMessage: error.message })
         }
     },
+    /**
+     * 
+     * @param {Request} req 
+     * @param {Response} res 
+     * @returns 
+     * @example
+     * const cliente = await clienteController.selecionarCliente(req, res);
+     * // Saída:
+     * // {
+     * //   idClientes: 1,
+     * //   nomeCliente: "João Silva",
+     * //   cpfCliente: "12345678900",
+     * //   telefoneCliente: "11999999999",
+     * //   emailCliente: "
+     * //   enderecoCliente: "Rua A, 123"
+     * 
+     * 
+     * 
+     */
+
     // SELECIONAR CLIENTE POR ID:
     selecionarCliente: async (req, res) => {
         try {
@@ -38,6 +85,23 @@ const clienteController = {
         }
     },
 
+    /**
+     * 
+     * @param {Request} req 
+     * @param {Response} res 
+     * @returns 
+     * @example
+     * const novoCliente = await clienteController.inserirCliente(req, res);
+     * // Saída:
+     * // {
+     * //   message: 'Registro incluido com sucesso',
+     * //   data: {
+     * //     affectedRows: 1,
+     * //     insertId: 3
+     * //   }
+     * }
+     * 
+     */
     // ADICIONAR UM CLIENTE:
     inserirCliente: async (req, res) => {
         try {
@@ -72,6 +136,28 @@ const clienteController = {
         }
     },
 
+    /**
+     * 
+     * @param {Request} req 
+     * @param {Response} res 
+     * @returns 
+     * @example
+     * const clienteAtualizado = await clienteController.alterarCliente(req, res);
+     * // Saída:
+     * // {
+     * //   message: 'Registro atualizado com sucesso',
+     * //   data: {
+     * //     fieldCount: 0,
+     * //     affectedRows: 1,
+     * //     insertId: 0,
+     * //     info: "",
+     * //     serverStatus: 2,
+     * //     warningStatus: 0,
+     * //     changedRows: 1
+     *  
+     * 
+     * 
+     */
     // ALTERAR CLIENTE:
     alterarCliente: async (req, res) => {
         try {
@@ -118,6 +204,26 @@ const clienteController = {
         }
     },
 
+    /**
+     * 
+     * @param {Request} req 
+     * @param {Response} res 
+     * @returns 
+     * @example
+     * const clienteRemovido = await clienteController.removerCliente(req, res);
+     * // Saída:
+     * // {
+     * //   message: 'Cliente excluido com sucesso ',
+     * //   data: {
+     * //     affectedRows: 1,
+     * //     insertId: 0,
+     * //     info: "",
+     * //     serverStatus: 2,
+     * //     warningStatus: 0,
+     * //     changedRows: 0
+     *  }
+     * 
+     */
     // REMOVER CLIENTE:
     removerCliente: async (req, res) => {
         try {

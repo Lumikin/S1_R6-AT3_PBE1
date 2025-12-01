@@ -1,5 +1,41 @@
 const { entregaModel } = require("../model/entregaModel");
 const entregaController = {
+
+    /**
+     * 
+     * @param {Request} req 
+     * @param {Response} res 
+     * @returns 
+     * @example
+     * const entregas = await entregaController.listarEntregas(req, res);
+     * // Saída:
+     * // [
+     * //   {
+     * //     idEntregas: 1,
+     * //     idPedido: 5,
+     * //     valorDistancia: 150.00,
+     * //     valorPeso: 75.00,
+     * //     acrescimo: 45.00,
+     * //     taxaExtra: 15.00,
+     * //     valorFinal: 285.00,
+     * //     desconto: 0.00,
+     * //     tipoEntrega: "urgente",
+     * //     statusEntrega: "transitando"
+     * //   },
+     * //   {
+     * //     idEntregas: 2,
+     * //     idPedido: 6,
+     * //     valorDistancia: 200.00,
+     * //     valorPeso: 100.00,
+     * //     acrescimo: 0.00,
+     * //     taxaExtra: 0.00,
+     * //     valorFinal: 300.00,
+     * //     desconto: 0.00,
+     * //     tipoEntrega: "normal",
+     * //     statusEntrega: "entregue"
+     * //   }
+     * // ]
+     */
     // lista todas as entregas
     listarEntregas: async (req, res) => {
         try {
@@ -23,6 +59,30 @@ const entregaController = {
         }
     },
 
+    /**
+     * 
+     * @param {Request} req 
+     * @param {Response} res 
+     * @returns 
+     * @example
+     * const novaEntrega = await entregaController.adicionarEntregas(req, res);
+     * // Saída:
+     * {
+     * //   message: "Entrega incluida com sucesso!",
+     * //   data: {
+     * //     idEntregas: 3,
+     * //     idPedido: 7,
+     * //     valorDistancia: 180.00,
+     * //     valorPeso: 90.00,
+     * //     acrescimo: 36.00,
+     * //     taxaExtra: 15.00,
+     * //     valorFinal: 321.00,
+     * //     desconto: 0.00,
+     * //     tipoEntrega: "urgente",
+     * //     statusEntrega: "transitando"
+     * //   }
+     * }
+     */
     // adiciona uma nova entrega
     adicionarEntregas: async (req, res) => {
         try {
@@ -50,6 +110,29 @@ const entregaController = {
             return res.status(500).json({ message: "Erro no servidor." });
         }
     },
+
+    /**
+     * 
+     * @param {Request} req 
+     * @param {Response} res 
+     * @returns 
+     * @example
+     * const entregaDeletada = await entregaController.deletarEntrega(req, res);
+     * // Saída:
+     * // {
+     * //   message: "Entrega excluida com sucesso ",
+     * //   data: {
+     * //     fieldCount: 0,
+     * //     affectedRows: 1,
+     * //     insertId: 0,
+     * //     info: "",
+     * //     serverStatus: 2,
+     * //     warningStatus: 0,
+     * //     changedRows: 0
+     * //   }
+     * // }
+     */
+    // Deletar entrega
     deletarEntrega: async (req, res) => {
         try {
             const id = Number(req.params.id)

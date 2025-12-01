@@ -118,7 +118,7 @@ const pedidoController = {
             }
 
             // Verifica se o pedido existe
-            const resultado = await pedidoModel.atualizarPedido(idPedido, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, tipoEntrega);
+            const resultado = await pedidoModel.atualizarPedido(tipoEntrega, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, idPedido,);
             return res.status(200).json({ mensagem: 'Pedido atualizado com sucesso.', data: resultado });
 
         } catch (error) {

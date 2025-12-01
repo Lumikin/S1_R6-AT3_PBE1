@@ -125,22 +125,8 @@ const pedidoController = {
             console.error(error);
             return res.status(500).json({ mensagem: 'Erro ao atualizar pedido.', detalhes: error.message });
         }
-    },
-
-<<<<<<< HEAD
-    // busca tipos de entrega
-    tipoEntrega: async (req, res) => {
-        try {
-            const tipos = await pedidoModel.tipoEntrega();
-            return res.status(200).json(tipos);
-        } catch (error) {
-            console.error(error);
-            return res.status(500).json({ mensagem: 'Erro ao buscar tipos de entrega.', detalhes: error.message });
-        }
     }
-=======
->>>>>>> 61530bcf2a733b9fd628b45855b07dc4b0e6dc43
-};
+}
 
 
 

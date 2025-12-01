@@ -91,7 +91,7 @@ const clienteModel = {
         console.log(rows);
         return rows;
     },
-<<<<<<< HEAD
+
 
     /**
      * 
@@ -113,9 +113,6 @@ const clienteModel = {
      */
     // Selecionar um cliente pelo ID
     selecionarUm: async (pId) => {
-=======
-    selecionarCliente: async (pId) => {
->>>>>>> 61530bcf2a733b9fd628b45855b07dc4b0e6dc43
         const sql = 'SELECT * FROM clientes WHERE idClientes = ?;';
         const values = [pId]
         const [rows] = await pool.query(sql, values)

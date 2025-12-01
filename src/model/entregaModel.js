@@ -105,7 +105,7 @@ const entregaModel = {
      * /// Atualizar status da entrega
      */
     // Deletar cliente
-    deleteCliente: async (pID) => {
+    deletarEntregas: async (pID) => {
         const sql = 'DELETE FROM entregas WHERE idEntregas = ?;';
         const values = [pID];
         const [rows] = await pool.query(sql, values)

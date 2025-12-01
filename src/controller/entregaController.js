@@ -50,6 +50,34 @@ const entregaController = {
             return res.status(500).json({ message: "Erro no servidor." });
         }
     },
+    deletarEntrega: async (req, res) => {
+        try {
+            const id = Number(req.params.id)
+            // VALIDAÇÃO DO ID
+            if (!id || !Number.isInteger(id)) {
+                return res.status(400).json({ message: "Forneça um ID valido!" })
+            }
+            const consulta = await entregaModel.selecionarEntrega(id);
+            if (consulta.length === 0) {
+                throw new Error("Registro não localizado");
+
+            }
+            else {
+                // REALIZA A EXCLUSÃO
+                const resultado = await entregaModel.deletarEntregas(id);
+                if (resultado.affectedRows === 1) {
+                    res.status(201).json({ message: "Entrega excluida com sucesso ", data: resultado })
+                }
+                else {
+                    throw new Error("Não foi possivel excluir a Entrega");
+
+                }
+            }
+        } catch (error) {
+            console.error(error)
+            res.status(500).json({ Message: 'Ocorreu um erro no servidor.', errorMessage: error.message })
+        }
+    }
 };
 
 module.exports = { entregaController };

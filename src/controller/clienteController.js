@@ -1,33 +1,34 @@
-const { clienteModel } = require("../model/clienteModel")
+const { clienteModel } = require("../model/clienteModel");
+const { pedidoModel } = require("../model/pedidoModel");
 const clienteController = {
 
-/**
-     * 
-     * @param {Request} req   
-     * @param {Response} res
-     * @returns
-     * @example
-     * const clientes = await clienteController.selecionarTodos(req, res);
-     * // Saída:
-     * // [
-     * //   {
-     * //     idClientes: 1,
-     * //     nomeCliente: "João Silva",
-     * //     cpfCliente: "12345678900",
-     * //     telefoneCliente: "11999999999",
-     * //     emailCliente: "
-     * //     enderecoCliente: "Rua A, 123"
-     * //   },
-     * //   {
-     * //     idClientes: 2,
-     * //     nomeCliente: "Maria Souza",
-     * //     cpfCliente: "09876543211",
-     * //     telefoneCliente: "21988888888",
-     * //     emailCliente: "
-     * //     enderecoCliente: "Avenida B, 456"
-     * //   }
-     * // ] 
-     */ 
+    /**
+         * 
+         * @param {Request} req   
+         * @param {Response} res
+         * @returns
+         * @example
+         * const clientes = await clienteController.selecionarTodos(req, res);
+         * // Saída:
+         * // [
+         * //   {
+         * //     idClientes: 1,
+         * //     nomeCliente: "João Silva",
+         * //     cpfCliente: "12345678900",
+         * //     telefoneCliente: "11999999999",
+         * //     emailCliente: "
+         * //     enderecoCliente: "Rua A, 123"
+         * //   },
+         * //   {
+         * //     idClientes: 2,
+         * //     nomeCliente: "Maria Souza",
+         * //     cpfCliente: "09876543211",
+         * //     telefoneCliente: "21988888888",
+         * //     emailCliente: "
+         * //     enderecoCliente: "Avenida B, 456"
+         * //   }
+         * // ] 
+         */
     // SELECIONAR TODOS OS CLIENTES:
     selecionarTodos: async (req, res) => {
         try {
@@ -233,14 +234,20 @@ const clienteController = {
             if (!id || !Number.isInteger(id)) {
                 return res.status(400).json({ message: "Forneça um ID valido!" })
             }
+            const consultaPedido = await pedidoModel.buscarClienteporPedido(id)
+
             const consulta = await clienteModel.selecionarUm(id);
             if (consulta.length === 0) {
-                throw new Error("Registro não localizado");
-
+                return res.status(400).json({ message: "Registro não foi localizado!" });
+            }
+            if (!consultaPedido || consultaPedido.length === 0) {
+                return res.status(400).json({ message: "O id esta vinculado com um pedido!" })
             }
             else {
                 // REALIZA A EXCLUSÃO
                 const resultado = await clienteModel.deleteCliente(id);
+
+
                 if (resultado.affectedRows === 1) {
                     res.status(201).json({ message: "Cliente excluido com sucesso ", data: resultado })
                 }

@@ -1,6 +1,20 @@
 const pool = require('../config/db');
 const pedidoModel = {
 
+
+    /**
+     * 
+     * @param {number} id 
+     *  Busca o cliente na tabela Pedidos
+     * 
+     */
+    buscarClienteporPedido: async (id) => {
+        const sql = "SELECT * FROM pedidos WHERE idClientes = ?;"
+        const values = [id]
+        const [rows] = await pool.query(sql, values)
+    },
+
+
     /**
      * Insere um novo pedido no banco de dados.
      *

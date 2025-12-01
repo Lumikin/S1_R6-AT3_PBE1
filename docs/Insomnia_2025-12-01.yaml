@@ -41,7 +41,7 @@ collection:
         meta:
           id: req_cea975a4beb041d5a8792ec51d3de9cd
           created: 1763404326322
-          modified: 1764595130810
+          modified: 1764612048082
           isPrivate: false
           description: ""
           sortKey: -1763396224919.25
@@ -54,7 +54,11 @@ collection:
             	"cpf": "01234567893",
             	"tel": "12345678903",
             	"email": "lumikomio69@gmail.com",
-            	"endereco": "Rua Cleber jose da silva"
+            	"logradouro": "Rua Cleber jose da silva",
+            	"numero" : "243",
+            	"bairro" : "matão",
+            	"estado": "sãopaulo",
+            	"CEP": "12345678"
             }
         headers:
           - name: Content-Type
@@ -69,12 +73,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: localhost:8081/clientes/5
+      - url: localhost:8081/clientes/4
         name: Deletar Cliente
         meta:
           id: req_ace4b959245642fea9e544ed4b500ea7
           created: 1763983269236
-          modified: 1764596481063
+          modified: 1764615723677
           isPrivate: false
           description: ""
           sortKey: -1763400444161
@@ -90,25 +94,29 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: localhost:8081/Clientes/6
+      - url: localhost:8081/Clientes/7
         name: Alterar Cliente
         meta:
           id: req_9cc5c31403884583bfecd27d71ef1031
           created: 1763987333126
-          modified: 1764596673565
+          modified: 1764612750311
           isPrivate: false
           description: ""
           sortKey: -1763400444261
         method: PUT
         body:
           mimeType: application/json
-          text: |-
+          text: |
             {
             	"nome": "Lucas",
-            	"cpf": "01234567848",
-            	"tel": "12345678908",
-            	"email": "lumikomio52@gmail.com",
-            	"endereco": "Rua Cleber jose da silva"
+            	"cpf": "01238567893",
+            	"tel": "12345678903",
+            	"email": "lumikomio63@gmail.com",
+            	"logradouro": "Rua Cleber jose da silva",
+            	"numero" : "243",
+            	"bairro" : "matão",
+            	"estado": "sãopaulo",
+            	"CEP": "12345678"
             }
         headers:
           - name: Content-Type
@@ -131,12 +139,12 @@ collection:
       sortKey: -1763991064971
       description: ""
     children:
-      - url: localhost:8081/Entregas
+      - url: localhost:8081/entregas
         name: Selecionar Entregas
         meta:
           id: req_9fa8aca6b42b4f32a6ef94f5f0903050
           created: 1763991995602
-          modified: 1763992039673
+          modified: 1764606355966
           isPrivate: false
           description: ""
           sortKey: -1763991997065
@@ -152,12 +160,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: localhost:8081/Entregas/7
+      - url: localhost:8081/entregas/7
         name: Adicionar Entregas
         meta:
           id: req_9a2b21acd3d040a8bf0c4555f53977d9
           created: 1764010507327
-          modified: 1764596729007
+          modified: 1764606351742
           isPrivate: false
           description: ""
           sortKey: -1763991997165
@@ -181,12 +189,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: localhost:8081/Entregas/1
+      - url: localhost:8081/entregas/1
         name: Deletar Entregas
         meta:
           id: req_0eb49374052f42ccab371c2f45f019dc
           created: 1764597098341
-          modified: 1764597107821
+          modified: 1764606359750
           isPrivate: false
           description: ""
           sortKey: -1763696220663
@@ -298,7 +306,7 @@ collection:
         meta:
           id: req_ccfd6a1a493745ac882222c414b14777
           created: 1764593639577
-          modified: 1764595455222
+          modified: 1764611402214
           isPrivate: false
           description: ""
           sortKey: -1764594449080
@@ -307,7 +315,7 @@ collection:
           mimeType: application/json
           text: |-
             {
-            	"idClientes" : "5",
+            	"idClientes" : "4",
             	"dataPedido": "2025-03-12",
             	"distanciaPedido" : "13",
             	"pesoCarga": "23", 

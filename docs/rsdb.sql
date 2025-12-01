@@ -30,11 +30,15 @@ CREATE TABLE `clientes` (
   `cpfCliente` char(11) NOT NULL,
   `telefoneCliente` char(12) NOT NULL,
   `emailCliente` varchar(250) NOT NULL,
-  `enderecoCliente` varchar(45) NOT NULL,
+  `logradouro` varchar(200) NOT NULL,
+  `numero` varchar(100) NOT NULL,
+  `bairro` varchar(255) NOT NULL,
+  `estado` varchar(255) NOT NULL,
+  `CEP` char(8) NOT NULL,
   PRIMARY KEY (`idClientes`),
   UNIQUE KEY `cfpCliente_UNIQUE` (`cpfCliente`),
   UNIQUE KEY `emailCliente_UNIQUE` (`emailCliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +47,7 @@ CREATE TABLE `clientes` (
 
 LOCK TABLES `clientes` WRITE;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
-INSERT INTO `clientes` VALUES (1,'Lucas','01234567898','12345678908','lumikomio02@gmail.com','Rua Cleber jose da silva'),(4,'Lucas','01234567896','12345678901','lumikomio64@gmail.com','Rua Cleber jose da silva'),(6,'Lucas','01234567848','12345678908','lumikomio52@gmail.com','Rua Cleber jose da silva');
+INSERT INTO `clientes` VALUES (1,'Lucas','01234567898','12345678908','lumikomio02@gmail.com','Rua Cleber jose da silva','','','',''),(4,'Lucas','01234567896','12345678901','lumikomio64@gmail.com','Rua Cleber jose da silva','','','',''),(7,'Lucas','12345678903','01238567893','lumikomio63@gmail.com','Rua Cleber jose da silva','243','matão','sãopaulo','12345678');
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -68,7 +72,7 @@ CREATE TABLE `entregas` (
   PRIMARY KEY (`idEntregas`),
   KEY `fk_entrega_pedidos_idx` (`idPedido`),
   CONSTRAINT `fk_entrega_pedidos` FOREIGN KEY (`idPedido`) REFERENCES `pedidos` (`idPedidos`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -77,7 +81,7 @@ CREATE TABLE `entregas` (
 
 LOCK TABLES `entregas` WRITE;
 /*!40000 ALTER TABLE `entregas` DISABLE KEYS */;
-INSERT INTO `entregas` VALUES (2,7,3000.00,100.00,0.00,15.00,2805.00,310.00,'normal','transitando'),(3,7,3000.00,100.00,0.00,15.00,2805.00,310.00,'normal','transitando'),(4,7,3000.00,100.00,0.00,15.00,2805.00,310.00,'normal','transitando'),(5,7,3000.00,100.00,0.00,15.00,2805.00,310.00,'normal','transitando');
+INSERT INTO `entregas` VALUES (2,7,3000.00,100.00,0.00,15.00,2805.00,310.00,'normal','transitando'),(3,7,3000.00,100.00,0.00,15.00,2805.00,310.00,'normal','transitando'),(4,7,3000.00,100.00,0.00,15.00,2805.00,310.00,'normal','transitando'),(5,7,3000.00,100.00,0.00,15.00,2805.00,310.00,'normal','transitando'),(6,7,3000.00,100.00,0.00,15.00,2805.00,310.00,'normal','transitando');
 /*!40000 ALTER TABLE `entregas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -100,7 +104,7 @@ CREATE TABLE `pedidos` (
   PRIMARY KEY (`idPedidos`),
   KEY `fk_pedidos_clientes1_idx` (`idClientes`),
   CONSTRAINT `fk_pedidos_clientes1` FOREIGN KEY (`idClientes`) REFERENCES `clientes` (`idClientes`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,7 +113,7 @@ CREATE TABLE `pedidos` (
 
 LOCK TABLES `pedidos` WRITE;
 /*!40000 ALTER TABLE `pedidos` DISABLE KEYS */;
-INSERT INTO `pedidos` VALUES (7,1,'2025-02-12',1500.00,100.00,2.00,1.00,'normal');
+INSERT INTO `pedidos` VALUES (7,1,'2025-02-12',1500.00,100.00,2.00,1.00,'normal'),(17,4,'2025-03-12',13.00,23.00,13.00,23.00,'normal');
 /*!40000 ALTER TABLE `pedidos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -122,4 +126,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-01 10:57:43
+-- Dump completed on 2025-12-01 16:15:19

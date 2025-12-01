@@ -23,8 +23,7 @@ const entregaModel = {
             );
 
             if (rowsPedido.length === 0) {
-                console.log(" Não foi possivel absorver o pedido ")
-                throw Error;
+                throw new Error("Não foi possivel localizar o pedido")
             }
 
             const pedido = rowsPedido[0];

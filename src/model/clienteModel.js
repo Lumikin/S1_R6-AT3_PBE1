@@ -32,7 +32,7 @@ const clienteModel = {
         console.log(rows);
         return rows;
     },
-    selecionarUm: async (pId) => {
+    selecionarCliente: async (pId) => {
         const sql = 'SELECT * FROM clientes WHERE idClientes = ?;';
         const values = [pId]
         const [rows] = await pool.query(sql, values)

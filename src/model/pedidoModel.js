@@ -21,13 +21,13 @@ const pedidoModel = {
      * //   affectedRows: 1
      * // }
      */
-    insertPedido: async (idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg) => {
-        const sql = `INSERT INTO pedidos (idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg)
-                     VALUES (?, ?, ?, ?, ?, ?)`;
-        const params = [idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg];
+    insertPedido: async (idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, tipoEntrega) => {
+        const sql = `INSERT INTO pedidos (idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, tipoEntrega)
+                     VALUES (?, ?, ?, ?, ?, ?, ?)`;
+        const params = [idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, tipoEntrega];
 
-        const [result] = await pool.query(sql, params);
-        return { insertId: result.insertId, affectedRows: result.affectedRows };
+        const [rows] = await pool.query(sql, params);
+        return rows
     },
 
     /**
@@ -143,33 +143,15 @@ const pedidoModel = {
      * //   changedRows: 1
      * // }
      */
-    atualizarPedido: async (idPedidos, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg) => {
+    atualizarPedido: async (idPedidos, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, tipoEntrega) => {
         const sql = `UPDATE pedidos 
-                     SET idClientes = ?, dataPedido = ?, distanciaPedido = ?, pesoCarga = ?, valorKm = ?, valorKg = ?
+                     SET idClientes = ?, dataPedido = ?, distanciaPedido = ?, pesoCarga = ?, valorKm = ?, valorKg = ?, tipoEntrega = ?
                      WHERE idPedidos = ?;`;
 
-        const values = [idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, idPedidos];
+        const values = [idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, idPedidos, tipoEntrega];
         const [rows] = await pool.query(sql, values);
         return rows;
     },
-
-    /**
-     * 
-     * @returns {Promise<Array>} Lista de todos os tipos de entrega.
-     *
-     * @example
-     * const tipos = await pedidoModel.tipoEntrega();
-     * // Saída:
-     * // [
-     * //   { idTipoEntrega: 1, descricao: "Normal" },
-     * //   { idTipoEntrega: 2, descricao: "Expressa" }
-     * // ]
-     */
-    tipoEntrega: async () => {
-        const sql = 'SELECT * FROM tipoEntrega;';
-        const [rows] = await pool.query(sql);
-        return rows;
-    }   
 };
 
 module.exports = { pedidoModel };

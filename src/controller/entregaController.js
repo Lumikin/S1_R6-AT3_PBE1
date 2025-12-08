@@ -88,15 +88,15 @@ const entregaController = {
     adicionarEntregas: async (req, res) => {
         try {
 
-            const calulo = await calculo.calcularEntrega()
-            const { status } = req.body
-            if (status !== "calculado" && status !== "transito" && status !== "entregue" && status !== "cancelado") {
+            const idPedido = Number(req.params.idPedido)
+            // Verificar se idPedido é valido
+            if (!idPedido || isNaN(idPedido)) {
                 return res.status(400).json({
-                    message: "por favor insira um status valido: calculado, transito, entregue, cancelado"
+                    message: "Insira um ID Valido!!"
                 })
             }
-            const resultado = await entregaModel.inserirEntrega(idPedido, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipo, status)
-
+            const resultadoCalculo = await calculo.calcularValorEntrega(idPedido);
+            const { valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto } = resultadoCalculo;
             return res.status(200).json({
                 message: "A entrega foi incluida com sucesso!",
                 data: resultado
@@ -190,7 +190,7 @@ const entregaController = {
     alterarEntrega: async (req, res) => {
         try {
             const id = Number(req.params.id);
-            const { status } = req.body;    
+            const { status } = req.body;
             if (!id || !Number.isInteger(id)) {
                 return res.status(400).json({ message: "Forneça um ID valido!" });
             }
@@ -204,7 +204,7 @@ const entregaController = {
                 throw new Error("Registro não localizado");
             } else {
                 // Realiza a atualização
-                const resultado = await entregaModel.atualizarEntregas(id, status); 
+                const resultado = await entregaModel.atualizarEntregas(id, status);
                 if (resultado.affectedRows === 1) {
                     res.status(201).json({ message: "Entrega atualizada com sucesso ", data: resultado });
                 } else {
@@ -213,12 +213,12 @@ const entregaController = {
             }
         } catch (error) {
             console.error(error);
-            res.status(500).json({ Message: 'Ocorreu um erro no servidor.', errorMessage: error.message } );
+            res.status(500).json({ Message: 'Ocorreu um erro no servidor.', errorMessage: error.message });
             if (error == (1451)) {
                 return res.status(500).json({ Message: 'Ocorreu um erro no servidor.', errorMessage: error.message });
-            }   
+            }
         }
-     }
+    }
 };
 
 module.exports = { entregaController };

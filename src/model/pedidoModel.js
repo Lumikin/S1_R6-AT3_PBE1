@@ -160,22 +160,50 @@ const pedidoModel = {
      * // }
      */
 
-    atualizarPedido: async (idPedidos, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, tipoEntrega, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto,) => {
+    atualizarPedido: async (idPedidos,
+        idClientes,
+        dataPedido,
+        distanciaPedido,
+        pesoCarga,
+        valorKm,
+        valorKg,
+        tipoEntrega,
+        valorDistancia,
+        valorPeso,
+        acrescimo,
+        taxaExtra,
+        valorFinal,
+        desconto,) => {
         const connection = await pool.getConnection();
         try {
             await connection.beginTransaction();
             const sqlPedido = `UPDATE pedidos 
                      SET idClientes = ?, dataPedido = ?, distanciaPedido = ?, pesoCarga = ?, valorKm = ?, valorKg = ?, tipoEntrega = ?
                      WHERE idPedidos = ?;`;
-            const valuesPedido = [idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, idPedidos, tipoEntrega];
+            const valuesPedido = [idClientes,
+                dataPedido,
+                distanciaPedido,
+                pesoCarga,
+                valorKm,
+                valorKg,
+                tipoEntrega,
+                idPedidos,];
             const [rowsPedido] = await connection.query(sqlPedido, valuesPedido);
-//
+            //
             const sql = 'UPDATE entregas SET valorDistancia = ?, valorPeso = ?, acrescimo = ?, taxaExtra = ? , valorFinal = ? , desconto = ? , tipoEntrega = ? WHERE idPedido = ?;';
-            const values = [valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipoEntrega, idPedidos];
+            const values = [valorDistancia,
+                valorPeso,
+                acrescimo,
+                taxaExtra,
+                valorFinal,
+                desconto,
+                tipoEntrega,
+                idPedidos,
+            ];
             const [rowsEntregas] = await connection.query(sql, values)
 
             connection.commit();
-            return {rowsPedido, rowsEntregas}
+            return { rowsPedido, rowsEntregas }
 
         } catch (error) {
             connection.rollback;

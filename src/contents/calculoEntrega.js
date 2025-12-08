@@ -43,7 +43,7 @@ const calculo = {
 
             // ---- Valor final ----
             const valorFinal = subTotal - desconto;
-
+            console.log("calculado com sucesso")
             console.log(valorDistancia,
                 valorPeso,
                 valorBase,

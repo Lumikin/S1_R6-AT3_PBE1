@@ -223,14 +223,16 @@ const pedidoController = {
             if (!idPedido) {
                 return res.status(400).json({ mensagem: 'O id do pedido é obrigatório.' });
             }
-
+            
+            const resultadoPedido = await pedidoModel.atualizarPedido(tipoEntrega, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, idPedido,);
 
 
             // Verifica se o pedido existe
-            const resultadoPedido = await pedidoModel.atualizarPedido(tipoEntrega, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, idPedido,);
-            const calculo = calculo.calcularValorEntrega(idPedido)
-            const resultadoCalculo = { valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipo};
-            const resultado = await pedidoModel.atualizarPedido(idPedido, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipo)
+            const calculo = await calculo.calcularValorEntrega(idPedido)
+            const { valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto } = calculo;
+
+            const resultado = await pedidoModel.atualizarPedido(tipoEntrega, idPedido, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto,)
+
 
 
             return res.status(200).json({ mensagem: 'Pedido atualizado com sucesso.', data: resultadoPedido, resultado });

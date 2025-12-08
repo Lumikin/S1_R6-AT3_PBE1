@@ -160,7 +160,7 @@ const pedidoModel = {
      * // }
      */
 
-    atualizarPedido: async (idPedidos, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, tipoEntrega, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipo) => {
+    atualizarPedido: async (idPedidos, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, tipoEntrega, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto,) => {
         const connection = await pool.getConnection();
         try {
             await connection.beginTransaction();
@@ -171,7 +171,7 @@ const pedidoModel = {
             const [rowsPedido] = await connection.query(sqlPedido, valuesPedido);
 //
             const sql = 'UPDATE entregas SET valorDistancia = ?, valorPeso = ?, acrescimo = ?, taxaExtra = ? , valorFinal = ? , desconto = ? , tipoEntrega = ? WHERE idPedido = ?;';
-            const values = [valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipo, idPedidos];
+            const values = [valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipoEntrega, idPedidos];
             const [rowsEntregas] = await connection.query(sql, values)
 
             connection.commit();

@@ -20,7 +20,7 @@ collection:
         meta:
           id: req_51ad811218f247e49fbdbe0728bc37e0
           created: 1763400444061
-          modified: 1763986644213
+          modified: 1765212415132
           isPrivate: false
           description: ""
           sortKey: -1763400444061
@@ -160,12 +160,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: localhost:8081/entregas/7
+      - url: localhost:8081/entregas/19
         name: Adicionar Entregas
         meta:
           id: req_9a2b21acd3d040a8bf0c4555f53977d9
           created: 1764010507327
-          modified: 1764606351742
+          modified: 1765201727399
           isPrivate: false
           description: ""
           sortKey: -1763991997165
@@ -174,7 +174,7 @@ collection:
           mimeType: application/json
           text: |-
             {
-            	"status" : "transitando"
+            	"status" : "entregue"
             }
         headers:
           - name: Content-Type
@@ -210,6 +210,39 @@ collection:
             send: true
             store: true
           rebuildPath: true
+      - url: localhost:8081/entregas/7
+        name: New Request
+        meta:
+          id: req_e801fcc3e9054d9b97dca17c069a4e27
+          created: 1765197924472
+          modified: 1765199119474
+          isPrivate: false
+          description: ""
+          sortKey: -1763991997265
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            [
+            	{
+            		"status": "transitando"
+            	}
+            ]
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
   - name: Pedidos
     meta:
       id: fld_6e0cc8d730e74b1fbe70e708893cb265
@@ -218,12 +251,12 @@ collection:
       sortKey: -1764588687748
       description: ""
     children:
-      - url: localhost:8081/pedidos/15
+      - url: localhost:8081/pedidos/17
         name: Selecionar um pedido
         meta:
           id: req_ef2f482692004b4c8e86d293f2130737
           created: 1764588690808
-          modified: 1764596093006
+          modified: 1765193217472
           isPrivate: false
           description: ""
           sortKey: -1764594449130
@@ -241,12 +274,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: localhost:8081/pedidos/15
+      - url: localhost:8081/pedidos/7
         name: Deletar um pedido
         meta:
           id: req_4c1dcc5ec8934f15927e993881f24386
           created: 1764593636159
-          modified: 1764596469729
+          modified: 1765193231984
           isPrivate: false
           description: ""
           sortKey: -1764594448880
@@ -264,12 +297,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: localhost:8081/pedidos/15
+      - url: localhost:8081/pedidos/7
         name: Alterar um Pedido
         meta:
           id: req_8d3a3396419f4f859c1a6b4082a2595f
           created: 1764593638067
-          modified: 1764596116507
+          modified: 1765214301514
           isPrivate: false
           description: ""
           sortKey: -1764594448980
@@ -278,12 +311,12 @@ collection:
           mimeType: application/json
           text: |-
             {
-            	"idClientes": "3",
+            	"idClientes": 4,
             	"dataPedido": "2025-03-12",
-            	"distanciaPedido": "13",
-            	"pesoCarga": "23",
-            	"valorKm": "13",
-            	"valorKg": "23",
+            	"distanciaPedido": "1090",
+            	"pesoCarga": "283",
+            	"valorKm": "61",
+            	"valorKg": "24",
             	"tipoEntrega": "urgente"
             }
         headers:

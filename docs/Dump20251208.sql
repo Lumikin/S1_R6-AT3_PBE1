@@ -2,7 +2,7 @@ CREATE DATABASE  IF NOT EXISTS `rsdb` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ 
 USE `rsdb`;
 -- MySQL dump 10.13  Distrib 8.0.43, for Win64 (x86_64)
 --
--- Host: 10.87.169.104    Database: rsdb
+-- Host: 10.87.169.46    Database: rsdb
 -- ------------------------------------------------------
 -- Server version	8.0.43
 
@@ -63,16 +63,16 @@ CREATE TABLE `entregas` (
   `idPedido` int NOT NULL,
   `valorDistancia` decimal(10,2) NOT NULL,
   `valorPeso` decimal(10,2) NOT NULL,
-  `acrescimo` decimal(10,2) NOT NULL,
-  `taxaExtra` decimal(10,2) NOT NULL,
+  `acrescimo` decimal(10,2) DEFAULT NULL,
+  `taxaExtra` decimal(10,2) DEFAULT NULL,
   `valorFinal` decimal(10,2) NOT NULL,
-  `desconto` decimal(10,2) NOT NULL,
+  `desconto` decimal(10,2) DEFAULT NULL,
   `tipoEntrega` varchar(20) NOT NULL,
   `statusEntrega` varchar(70) NOT NULL,
   PRIMARY KEY (`idEntregas`),
   KEY `fk_entrega_pedidos_idx` (`idPedido`),
   CONSTRAINT `fk_entrega_pedidos` FOREIGN KEY (`idPedido`) REFERENCES `pedidos` (`idPedidos`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,7 +81,7 @@ CREATE TABLE `entregas` (
 
 LOCK TABLES `entregas` WRITE;
 /*!40000 ALTER TABLE `entregas` DISABLE KEYS */;
-INSERT INTO `entregas` VALUES (2,7,3000.00,100.00,0.00,15.00,2805.00,310.00,'normal','transitando'),(3,7,3000.00,100.00,0.00,15.00,2805.00,310.00,'normal','transitando'),(4,7,3000.00,100.00,0.00,15.00,2805.00,310.00,'normal','transitando'),(5,7,3000.00,100.00,0.00,15.00,2805.00,310.00,'normal','transitando'),(6,7,3000.00,100.00,0.00,15.00,2805.00,310.00,'normal','transitando');
+INSERT INTO `entregas` VALUES (2,7,110.00,5575.00,1137.00,15.00,6153.30,683.70,'urgente','transitando'),(3,7,110.00,5575.00,1137.00,15.00,6153.30,683.70,'urgente','transitando'),(4,7,110.00,5575.00,1137.00,15.00,6153.30,683.70,'urgente','transitando'),(5,7,110.00,5575.00,1137.00,15.00,6153.30,683.70,'urgente','transitando'),(6,7,110.00,5575.00,1137.00,15.00,6153.30,683.70,'urgente','transitando'),(7,7,110.00,5575.00,1137.00,15.00,6153.30,683.70,'urgente','calculado'),(8,19,300.00,15.00,0.00,0.00,315.00,0.00,'normal','entregue');
 /*!40000 ALTER TABLE `entregas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -104,7 +104,7 @@ CREATE TABLE `pedidos` (
   PRIMARY KEY (`idPedidos`),
   KEY `fk_pedidos_clientes1_idx` (`idClientes`),
   CONSTRAINT `fk_pedidos_clientes1` FOREIGN KEY (`idClientes`) REFERENCES `clientes` (`idClientes`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -113,7 +113,7 @@ CREATE TABLE `pedidos` (
 
 LOCK TABLES `pedidos` WRITE;
 /*!40000 ALTER TABLE `pedidos` DISABLE KEYS */;
-INSERT INTO `pedidos` VALUES (7,1,'2025-02-12',1500.00,100.00,2.00,1.00,'normal'),(17,4,'2025-03-12',13.00,23.00,13.00,23.00,'normal');
+INSERT INTO `pedidos` VALUES (7,4,'2025-03-12',1090.00,283.00,61.00,24.00,'urgente'),(17,4,'2025-03-12',13.00,23.00,13.00,23.00,'normal'),(18,4,'2025-03-12',13.00,23.00,13.00,23.00,'normal'),(19,7,'2025-02-12',120.00,10.00,2.50,1.50,'normal');
 /*!40000 ALTER TABLE `pedidos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -126,4 +126,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-01 16:15:19
+-- Dump completed on 2025-12-08 14:27:41

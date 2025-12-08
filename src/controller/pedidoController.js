@@ -1,5 +1,5 @@
 const { pedidoModel } = require("../model/pedidoModel");
-
+const { calculo } = require("../contents/calculoEntrega");
 const pedidoController = {
 
     /**
@@ -210,6 +210,7 @@ const pedidoController = {
                     message: "Verifique se o tipoEntrega esta igual a: normal ou urgente!"
                 })
             }
+            calculo.calcularValorEntrega(idPedido)
 
             // Validação básica dos dados recebidos
             if (!idClientes || !dataPedido || !distanciaPedido || !pesoCarga || !valorKm || !valorKg || isNaN(valorKg) || isNaN(valorKm)) {
@@ -222,6 +223,8 @@ const pedidoController = {
             if (!idPedido) {
                 return res.status(400).json({ mensagem: 'O id do pedido é obrigatório.' });
             }
+
+           
 
             // Verifica se o pedido existe
             const resultado = await pedidoModel.atualizarPedido(tipoEntrega, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, idPedido,);

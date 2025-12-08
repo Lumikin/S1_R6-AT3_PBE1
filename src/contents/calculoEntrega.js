@@ -4,7 +4,7 @@ const calculo = {
         {
             const pedidoData = await entregaModel.buscarPedido(pedido);
             const pedidoInfo = pedidoData[0];
-            
+
             const distancia = pedidoInfo.distanciaPedido;
             const peso = pedidoInfo.pesoCarga;
             const vKM = pedidoInfo.valorKm;
@@ -44,6 +44,14 @@ const calculo = {
             // ---- Valor final ----
             const valorFinal = subTotal - desconto;
 
+            console.log(valorDistancia,
+                valorPeso,
+                valorBase,
+                acrescimo,
+                taxaExtra,
+                subTotal,
+                desconto,
+                valorFinal)
             return {
                 valorDistancia,
                 valorPeso,
@@ -52,8 +60,10 @@ const calculo = {
                 taxaExtra,
                 subTotal,
                 desconto,
+                tipo,
                 valorFinal
             };
+
         }
     }
 }

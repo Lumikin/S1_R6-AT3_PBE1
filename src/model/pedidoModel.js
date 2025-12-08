@@ -1,4 +1,6 @@
 const pool = require('../config/db');
+const connecton = await pool.getConnection();
+const { calculo } = require("../contents/calculoEntrega")
 const pedidoModel = {
 
 
@@ -157,14 +159,16 @@ const pedidoModel = {
      * //   changedRows: 1
      * // }
      */
+
     atualizarPedido: async (idPedidos, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, tipoEntrega) => {
-        const sql = `UPDATE pedidos 
+        await connecton.beginTransaction();
+        const sqlPedido = `UPDATE pedidos 
                      SET idClientes = ?, dataPedido = ?, distanciaPedido = ?, pesoCarga = ?, valorKm = ?, valorKg = ?, tipoEntrega = ?
                      WHERE idPedidos = ?;`;
-
         const values = [idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, idPedidos, tipoEntrega];
         const [rows] = await pool.query(sql, values);
         return rows;
+
     },
 
     /**

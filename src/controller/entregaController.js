@@ -89,14 +89,20 @@ const entregaController = {
         try {
 
             const idPedido = Number(req.params.idPedido)
+            const { status } = req.body
             // Verificar se idPedido é valido
             if (!idPedido || isNaN(idPedido)) {
                 return res.status(400).json({
                     message: "Insira um ID Valido!!"
                 })
             }
+            if (status !== "entregue" && status !== "transitando" && status !== "cancelado" && status !== "calculado") {
+                return res.status(400).json({ message: "Verifique se os status de entrega estao digitados: entregue, transitando ou cancelado", });
+            }
             const resultadoCalculo = await calculo.calcularValorEntrega(idPedido);
-            const { valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto } = resultadoCalculo;
+            const { valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipo } = resultadoCalculo;
+            const resultado = await entregaModel.inserirEntrega(idPedido, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipo, status)
+
             return res.status(200).json({
                 message: "A entrega foi incluida com sucesso!",
                 data: resultado
@@ -104,7 +110,7 @@ const entregaController = {
 
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ message: "Erro no servidor." });
+            res.status(500).json({ Message: 'Ocorreu um erro no servidor.', errorMessage: error.message })
         }
     },
 

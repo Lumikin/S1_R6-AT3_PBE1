@@ -35,6 +35,9 @@ const entregaModel = {
         return rows;
     },
 
+
+    
+
     /**
      * 
      * @param {number} pID

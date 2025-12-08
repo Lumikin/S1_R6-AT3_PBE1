@@ -240,9 +240,6 @@ const clienteController = {
             if (consulta.length === 0) {
                 return res.status(400).json({ message: "Registro não foi localizado!" });
             }
-            if (!consultaPedido || consultaPedido.length === 0) {
-                return res.status(400).json({ message: "O id esta vinculado com um pedido!" })
-            }
             else {
                 // REALIZA A EXCLUSÃO
                 const resultado = await clienteModel.deleteCliente(id);

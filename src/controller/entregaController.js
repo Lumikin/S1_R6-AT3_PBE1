@@ -161,7 +161,63 @@ const entregaController = {
                 return res.status(500).json({ Message: 'Ocorreu um erro no servidor.', errorMessage: error.message })
             }
         }
-    }
+    },
+
+    /**
+     * 
+     * 
+     * @param {Request} req 
+     * @param {Response} res 
+     * @returns 
+     * @example
+     * const entregaAlterada = await entregaController.alterarEntrega(req, res);
+     * // Saída:
+     * // {
+     * //   message: "Entrega atualizada com sucesso ",
+     * //   data: {
+     * //     fieldCount: 0,
+     * //     affectedRows: 1,
+     * //     insertId: 0,
+     * //     info: "",
+     * //     serverStatus: 2,
+     * //     warningStatus: 0,
+     * //     changedRows: 1
+     * //   }
+     * // }
+     */
+    // atualiza uma entrega pelo ID
+    alterarEntrega: async (req, res) => {
+        try {
+            const id = Number(req.params.id);
+            const { status } = req.body;    
+            if (!id || !Number.isInteger(id)) {
+                return res.status(400).json({ message: "Forneça um ID valido!" });
+            }
+            // Validação do status
+            if (status !== "entregue" && status !== "transitando" && status !== "cancelado") {
+                return res.status(400).json({ message: "Verifique se os status de entrega estao digitados: entregue, transitando ou cancelado", });
+            }
+            // Verifica se a entrega existe
+            const consulta = await entregaModel.selecionarEntrega(id);
+            if (consulta.length === 0) {
+                throw new Error("Registro não localizado");
+            } else {
+                // Realiza a atualização
+                const resultado = await entregaModel.atualizarEntregas(id, status); 
+                if (resultado.affectedRows === 1) {
+                    res.status(201).json({ message: "Entrega atualizada com sucesso ", data: resultado });
+                } else {
+                    throw new Error("Não foi possivel atualizar a Entrega");
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ Message: 'Ocorreu um erro no servidor.', errorMessage: error.message } );
+            if (error == (1451)) {
+                return res.status(500).json({ Message: 'Ocorreu um erro no servidor.', errorMessage: error.message });
+            }   
+        }
+     }
 };
 
 module.exports = { entregaController };

@@ -112,5 +112,13 @@ const entregaModel = {
         const [rows] = await pool.query(sql, values)
         return rows;
     },
+
+    
+    alterarEntrega: async (pID, pStatus) => {
+        const sql = 'UPDATE entregas SET statusEntrega = ? WHERE idEntregas = ?;';
+        const values = [pStatus, pID];
+        const [rows] = await pool.query(sql, values)
+        return rows;
+    }
 };
 module.exports = { entregaModel };

@@ -1,7 +1,7 @@
 const mysql = require('mysql2/promise')
 //Limitar as conexoes e quando estão cheias ele vai aguardar uma conexão ficar livre para colocar outra.
 const pool = mysql.createPool({
-    host: '10.87.169.104',
+    host: '10.87.169.46',
     user: 'lucas',
     password: 'MySQL1234',
     database: 'rsdb',

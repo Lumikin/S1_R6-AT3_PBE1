@@ -86,21 +86,70 @@ const entregaController = {
     // adiciona uma nova entrega
     adicionarEntregas: async (req, res) => {
         try {
-            const fkPedido = Number(req.params.idPedido);
-            const { status } = req.body;
-            if (!fkPedido || isNaN(fkPedido) || fkPedido <= 0) {
+            const idPedido = Number(req.params.idPedido)
+            // Verificar se idPedido é valido
+            if (!idPedido || isNaN(idPedido)) {
                 return res.status(400).json({
-                    message: "Voce deve inserir um numero valido do pedido!!",
-                });
+                    message: "Insira um ID Valido!!"
+                })
             }
-            if (status !== "entregue" && status !== "transitando" && status !== "cancelado") {
-                return res.status(400).json({ message: "Verifique se os status de entrega estao digitados: entregue, transitando ou cancelado", });
+
+            //Consultar os dados
+            const dadosPedidos = await entregaModel.buscarPedido(idPedido)
+
+            //Verificar se os dados estão inseridos!
+            if (!dadosPedidos || dadosPedidos.length === 0) {
+                return res.status(404).json({ message: "Pedido não encontrado." });
             }
-            const resultado = await entregaModel.incluirEntregas(fkPedido, status);
-            if (!resultado || resultado.length === 0) {
-                return res.status(200).json({ message: "Registro não encontrado!" })
+
+            const pedido = dadosPedidos[0]
+
+            const distancia = pedido.distanciaPedido
+            const peso = pedido.pesoCarga
+            const vKM = pedido.valorKm
+            const vKG = pedido.valorKg
+            const tipo = pedido.tipoEntrega
+
+            if (!distancia || !peso || !vKM || !vKG || !tipo) {
+                return res.status(400).json({
+                    message: "Os dados do pedido não foram encontrados"
+                })
             }
-            return res.status(200).json({ message: "Entrega incluida com sucesso!", data: resultado });
+
+            const valorDistancia = distancia * vKM;
+            const valorPeso = peso * vKG;
+            const valorBase = valorDistancia + valorPeso;
+
+            let acrescimo = 0
+            if (tipo === "urgente") {
+                acrescimo = valorBase * 0.20 //20%
+            }
+            let taxaExtra = 0
+            if (peso > 50) {
+                taxaExtra = 15, 0
+            }
+
+            let subTotal = acrescimo + taxaExtra + valorBase
+
+            let desconto = 0
+            if (subTotal > 500) {
+                desconto = subTotal * 0.10;
+            }
+            const valorFinal = subTotal - desconto + taxaExtra
+            const { status } = req.body
+            if (status !== "calculado" && status !== "transito" && status !== "entregue" && status !== "cancelado") {
+                return res.status(400).json({
+                    message: "por favor insira um status valido: calculado, transito, entregue, cancelado"
+                })
+            }
+
+            const resultado = await entregaModel.inserirEntrega(idPedido, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipo, status)
+
+            return res.status(200).json({
+                message: "A entrega foi incluida com sucesso!",
+                data: resultado
+            })
+
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: "Erro no servidor." });

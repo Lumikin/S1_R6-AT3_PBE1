@@ -1,5 +1,5 @@
 const pool = require('../config/db');
-const connecton = await pool.getConnection();
+
 const { calculo } = require("../contents/calculoEntrega")
 const pedidoModel = {
 
@@ -160,14 +160,28 @@ const pedidoModel = {
      * // }
      */
 
-    atualizarPedido: async (idPedidos, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, tipoEntrega) => {
-        await connecton.beginTransaction();
-        const sqlPedido = `UPDATE pedidos 
+    atualizarPedido: async (idPedidos, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, tipoEntrega, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipo) => {
+        const connection = await pool.getConnection();
+        try {
+            await connection.beginTransaction();
+            const sqlPedido = `UPDATE pedidos 
                      SET idClientes = ?, dataPedido = ?, distanciaPedido = ?, pesoCarga = ?, valorKm = ?, valorKg = ?, tipoEntrega = ?
                      WHERE idPedidos = ?;`;
-        const values = [idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, idPedidos, tipoEntrega];
-        const [rows] = await pool.query(sql, values);
-        return rows;
+            const valuesPedido = [idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, idPedidos, tipoEntrega];
+            const [rowsPedido] = await connection.query(sqlPedido, valuesPedido);
+//
+            const sql = 'UPDATE entregas SET valorDistancia = ?, valorPeso = ?, acrescimo = ?, taxaExtra = ? , valorFinal = ? , desconto = ? , tipoEntrega = ? WHERE idPedido = ?;';
+            const values = [valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipo, idPedidos];
+            const [rowsEntregas] = await connection.query(sql, values)
+
+            connection.commit();
+            return {rowsPedido, rowsEntregas}
+
+        } catch (error) {
+            connection.rollback;
+            console.error(error)
+        }
+
 
     },
 
@@ -183,11 +197,7 @@ const pedidoModel = {
      * //   { idTipoEntrega: 2, descricao: "Expressa" }
      * // ]
      */
-    tipoEntrega: async () => {
-        const sql = 'SELECT * FROM tipoEntrega;';
-        const [rows] = await pool.query(sql);
-        return rows;
-    }
+
 };
 
 module.exports = { pedidoModel };

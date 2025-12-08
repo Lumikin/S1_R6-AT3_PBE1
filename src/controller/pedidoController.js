@@ -1,5 +1,6 @@
 const { pedidoModel } = require("../model/pedidoModel");
 const { calculo } = require("../contents/calculoEntrega");
+const { entregaModel } = require("../model/entregaModel")
 const pedidoController = {
 
     /**
@@ -204,13 +205,12 @@ const pedidoController = {
     atualizarPedido: async (req, res) => {
         try {
             const { idPedido } = req.params;
-            const { idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, tipoEntrega } = req.body;
+            const { idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, tipoEntrega, } = req.body;
             if (tipoEntrega !== "normal" && tipoEntrega !== "urgente") {
                 return res.status(400).json({
                     message: "Verifique se o tipoEntrega esta igual a: normal ou urgente!"
                 })
             }
-            calculo.calcularValorEntrega(idPedido)
 
             // Validação básica dos dados recebidos
             if (!idClientes || !dataPedido || !distanciaPedido || !pesoCarga || !valorKm || !valorKg || isNaN(valorKg) || isNaN(valorKm)) {
@@ -224,11 +224,16 @@ const pedidoController = {
                 return res.status(400).json({ mensagem: 'O id do pedido é obrigatório.' });
             }
 
-           
+
 
             // Verifica se o pedido existe
-            const resultado = await pedidoModel.atualizarPedido(tipoEntrega, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, idPedido,);
-            return res.status(200).json({ mensagem: 'Pedido atualizado com sucesso.', data: resultado });
+            const resultadoPedido = await pedidoModel.atualizarPedido(tipoEntrega, idClientes, dataPedido, distanciaPedido, pesoCarga, valorKm, valorKg, idPedido,);
+            const calculo = calculo.calcularValorEntrega(idPedido)
+            const resultadoCalculo = { valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipo};
+            const resultado = await pedidoModel.atualizarPedido(idPedido, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipo)
+
+
+            return res.status(200).json({ mensagem: 'Pedido atualizado com sucesso.', data: resultadoPedido, resultado });
 
         } catch (error) {
             console.error(error);

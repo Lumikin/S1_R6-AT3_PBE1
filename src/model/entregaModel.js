@@ -50,7 +50,7 @@ const entregaModel = {
      * // }
      * 
      */
-    
+
     // Incluir nova entrega
     inserirEntrega: async (idPedido, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipoEntrega, statusEntrega) => {
         const sql = `INSERT INTO Entregas (idPedido, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipoEntrega, statusEntrega) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
@@ -60,7 +60,7 @@ const entregaModel = {
     },
 
 
-    
+
 
     /**
      * 
@@ -92,9 +92,9 @@ const entregaModel = {
      * 
      */
     // Atualizar status da entrega
-    alterarEntrega: async (pID, pStatus) => {
-        const sql = 'UPDATE entregas SET statusEntrega = ? WHERE idEntregas = ?;';
-        const values = [pStatus, pID];
+    alterarEntrega: async (idEntrega, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipo) => {
+        const sql = 'UPDATE entregas SET valorDistancia = ?, valorPeso = ?, acrescimo = ?, taxaExtra = ? , valorFinal = ? , desconto = ? , tipoEntrega = ? WHERE idEntregas = ?;';
+        const values = [idEntrega, valorDistancia, valorPeso, acrescimo, taxaExtra, valorFinal, desconto, tipo];
         const [rows] = await pool.query(sql, values)
         return rows;
     }
